@@ -36,6 +36,7 @@ let sendMessageToGG = function(query, sessionId, contexts, callback){
 		"sessionId": sessionId
 	}
 	let postBody = JSON.stringify(request);
+	console.log(postBody);
 	let reqPost = https.request({
 		host : apiHost,
 		path : "/v1/query",
