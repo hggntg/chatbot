@@ -293,9 +293,12 @@ app.post("/sendMessage",function(req, res){
 					"constructionName","constructionAddress","constructionCity","constructionInvestor","constructionUnit",
 					"constructionType","constructionDesignType","constructionLevel"
 					];
+					let choosingEleKey = [
+					"Tên công trình","Địa chỉ","Thành phố","Nhà đầu tư","Đơn vị thi công","Loại công trình","Loại thiết kế","Cấp công trình"
+					]
 					let choosingEleLength = choosingEle.length;
 					for(let i = 0; i < choosingEleLength; i++){
-						template.text += "\\n" + context.parameters[choosingEle[i]]; 
+						template.text += "\\n" + choosingEleKey[i] + " : " + decodeMessage(context.parameters[choosingEle[i]]); 
 					}
 					let temp = Object.assign({}, yesOrNoTemplate);
 					temp.text = "Bạn có muốn lưu công trình này?"
