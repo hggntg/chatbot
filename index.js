@@ -89,56 +89,56 @@ app.post("/sendMessage",function(req, res){
 		if(session[input.user]["currentFlow"] === null){
 			requestMessage = "name " + input.message;
 			session[input.user]["currentFlow"] = "create.name";
-			sendMessageToGG(input.message, input.user, (reponseMess) => {
+			sendMessageToGG(input.message, input.user, [], (reponseMess) => {
 				res.send(reponseMess);
 			});
 		}
 		else if(session[input.user]["currentFlow"] === "create.name"){
 			requestMessage = "address " + input.message;
 			session[input.user]["currentFlow"] = "create.address";
-			sendMessageToGG(input.message, input.user, (reponseMess) => {
+			sendMessageToGG(input.message, input.user, [], (reponseMess) => {
 				res.send(reponseMess);
 			});
 		}
 		else if(session[input.user]["currentFlow"] === "create.address"){
 			requestMessage = "city " + input.message;
 			session[input.user]["currentFlow"] = "create.city";
-			sendMessageToGG(input.message, input.user, (reponseMess) => {
+			sendMessageToGG(input.message, input.user, [], (reponseMess) => {
 				res.send(reponseMess);
 			});
 		}
 		else if(session[input.user]["currentFlow"] === "create.city"){
 			requestMessage = "investor " + input.message;
 			session[input.user]["currentFlow"] = "create.investor";
-			sendMessageToGG(input.message, input.user, (reponseMess) => {
+			sendMessageToGG(input.message, input.user, [], (reponseMess) => {
 				res.send(reponseMess);
 			});
 		}
 		else if(session[input.user]["currentFlow"] === "create.investor"){
 			requestMessage = "unit " + input.message;
 			session[input.user]["currentFlow"] = "create.unit";
-			sendMessageToGG(input.message, input.user, (reponseMess) => {
+			sendMessageToGG(input.message, input.user, [], (reponseMess) => {
 				res.send(reponseMess);
 			});
 		}
 		else if(session[input.user]["currentFlow"] === "create.unit"){
 			requestMessage = "type " + input.message;
 			session[input.user]["currentFlow"] = "create.type";
-			sendMessageToGG(input.message, input.user, (reponseMess) => {
+			sendMessageToGG(input.message, input.user, [], (reponseMess) => {
 				res.send(reponseMess);
 			});
 		}
 		else if(session[input.user]["currentFlow"] === "create.type"){
 			requestMessage = "designType " + input.message;
 			session[input.user]["currentFlow"] = "create.designType";
-			sendMessageToGG(input.message, input.user, (reponseMess) => {
+			sendMessageToGG(input.message, input.user, [], (reponseMess) => {
 				res.send(reponseMess);
 			});
 		}
 		else if(session[input.user]["currentFlow"] === "create.designType"){
 			requestMessage = "level " + input.message;
 			session[input.user]["currentFlow"] = "create.level";
-			sendMessageToGG(input.message, input.user, (reponseMess) => {
+			sendMessageToGG(input.message, input.user, [], (reponseMess) => {
 				res.send(reponseMess);
 			});
 		}
