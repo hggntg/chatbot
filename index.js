@@ -53,8 +53,8 @@ let sendMessageToGG = function(query, sessionId, contexts, callback){
 		path : "query",
 		method : "POST",
 		headers :{
-			Content-Type : "application/json",
-			Content-Length : postBody.length,
+			"Content-Type" : "application/json",
+			"Content-Length" : postBody.length,
 			Authorization: "Bearer " + CLIENT_TOKEN
 		}
 	},function(res){
