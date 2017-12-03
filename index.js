@@ -95,11 +95,14 @@ let getContext = function(input, contextName, callback){
 	reqGet.end();
 }
 
-let reply = function(template){
-	return {
-		text : template.text,
-		buttons : template.buttons || undefined
+let reply = function(params){
+	let templates = arguments;
+	let response = [];
+	let templatesLength = templates.length;
+	for(let i = 0; i < templatesLength; i++){
+		response.push({text : templates[i].text, buttons : templates[i].buttons});
 	}
+	return response;
 }
 
 let createButton = function(title, action, value){
@@ -118,7 +121,7 @@ let createTemplate = function(text, buttons = null){
 }
 
 let menuTemplate = {
-	"text" : "Chào bạn! Bạn đang muốn làm gì?",
+	"text" : "",
 	"buttons" : [
 	{
 		"title" : "Bạn muốn tạo công trình mới?",
@@ -133,6 +136,21 @@ let menuTemplate = {
 	]
 }
 
+let yesOrNoTemplate = {
+	"text" : "",
+	"buttons" : [
+	{
+		"title" : "Đồng ý",
+		"action" : "select",
+		"value" : "yes"
+	},
+	{
+		"title" : "Hủy",
+		"action" : "select",
+		"value" : "no"
+	}
+	]
+}
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -228,9 +246,19 @@ app.post("/sendMessage",function(req, res){
 			sendMessageToGG(requestMessage, input.user, false, (reponseMess) => {
 				if(reponseMess.status.code != 200){
 					session[input.user]["currentFlow"] = "create.unit";
+					res.send(reply(template));
 				}
-				session[input.user]["currentFlow"] = "create.type";
-				res.send(reponseMess);
+				else{
+					session[input.user]["currentFlow"] = "create.type";
+					template.text = reponseMess.result.speech;
+					let designTypes = ['Thiết kế 1 bước', 'Thiết kế 2 bước', 'Thiết kế 3 bước'];
+					let designTypesLength = designTypes.length;
+					let buttons = [];
+					for(let i = 0; i < designTypesLength; i++){
+						buttons.push(createButton(designTypes[i], "select", designTypes[i]));
+					}
+					res.send(reply(template));
+				}
 			});
 		}
 		else if(session[input.user]["currentFlow"] === "create.type"){
@@ -240,6 +268,13 @@ app.post("/sendMessage",function(req, res){
 					session[input.user]["currentFlow"] = "create.type";
 				}
 				session[input.user]["currentFlow"] = "create.designType";
+				template.text = reponseMess.reulst.speech;
+				let levels = ['Cấp I', 'Cấp II', 'Cấp III', 'Cấp IV', 'Cấp đặc biệt'];
+				let levelsLength = levels.length;
+				let buttons = [];
+				for(let i = 0; i < levelsLength; i++){
+					buttons.push(createButton(levels[i], "select", levels[i]));
+				}
 				res.send(reponseMess);
 			});
 		}
@@ -250,7 +285,20 @@ app.post("/sendMessage",function(req, res){
 					session[input.user]["currentFlow"] = "create.designType";
 				}
 				session[input.user]["currentFlow"] = "create.level";
-				res.send(reponseMess);
+				getContext(input, "createconstruction", function(context){
+					template.text = reponseMess.result.speech;
+					let choosingEle = [
+					"constructionName","constructionAddress","constructionCity","constructionInvestor","constructionUnit",
+					"constructionType","constructionDesignType","constructionLevel"
+					];
+					let choosingEleLength = choosingEle.length;
+					for(let i = 0; i < choosingEleLength; i++){
+						template.text += "\\n" + context[choosingEle[i]]; 
+					}
+					let temp = Object.assign({}, yesOrNoTemplates);
+					temp.text = "Bạn có muốn lưu công trình này?"
+					res.send(reply(template, temp));
+				})
 			});
 		}
 		if(session[input.user]["currentFlow"] === "create.level"){
@@ -280,7 +328,9 @@ app.post("/sendMessage",function(req, res){
 app.get("/reply", function(req, res){
 	let input = req.query;
 	if(input.type === "menu"){
-		let reponseMess = reply(menuTemplate);
+		let temp = Object.assign({}, menuTemplate);
+		temp.text = "Chào bạn! Bạn đang muôn làm gì?";
+		let reponseMess = reply(temp);
 		res.send(reponseMess);
 	}
 	else{
