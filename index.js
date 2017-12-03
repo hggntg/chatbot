@@ -71,10 +71,10 @@ let decodeMessage = function(message){
 	message = new Buffer(message).toString("utf-8");
 	return message;
 }
-let getContext = function(input, callback){
+let getContext = function(input, contextName, callback){
 	let reqGet = https.request({
 		host : apiHost,
-		path : "/v1/contexts?v=20150910&sessionId=" + input.user,
+		path : `/v1/contexts/${contextName}?v=20150910&sessionId=${input.user}`,
 		method : "GET",
 		headers :{
 			"Content-Type" : "application/json, charset=utf-8",
@@ -94,13 +94,45 @@ let getContext = function(input, callback){
 	});
 	reqGet.end();
 }
-let setContext = function(name, lifespan, parameters){
+
+let reply = function(template){
 	return {
-		name : name,
-		lifespan : lifespan,
-		parameters : parameters
+		text : template.text,
+		buttons : template.buttons || undefined
 	}
 }
+
+let createButton = function(title, action, value){
+	return {
+		title : title,
+		action : action,
+		value : value
+	}
+}
+
+let createTemplate = function(text, buttons){
+	return {
+		text : text,
+		buttons : buttons || 
+	}
+}
+
+let menuTemplate = {
+	"text" : "Chào bạn! Bạn đang muốn làm gì?",
+	"buttons" : [
+	{
+		"title" : "Bạn muốn tạo công trình mới?",
+		"action" : "create",
+		"value" : "create"
+	},
+	{
+		"title" : "Bạn muốn chỉnh sửa thông tin công trình?",
+		"action" : "update",
+		"value" : "create"
+	}
+	]
+}
+
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -196,12 +228,13 @@ app.post("/sendMessage",function(req, res){
 		if(session[input.user]["currentFlow"] === "create.level"){
 			if(input.message === "OK"){
 				delete session[input.user];
-				getContext(input, function(context){
+				getContext(input, "createconstruction", function(context){
 					res.send(context);
 				});
 			}
 			else if(input.message === "NO"){
 				delete session[input.user];
+				res.send({text : "Bạn chỉ có thể chọn 'Đồng ý' hoặc 'Không'"});
 			}
 			else{
 				res.send({text : "Bạn chỉ có thể chọn 'Đồng ý' hoặc 'Không'"});
@@ -213,6 +246,17 @@ app.post("/sendMessage",function(req, res){
 	}
 	else{
 		res.send("OK");
+	}
+});
+
+app.get("/reply", function(req, res){
+	let input = req.query;
+	if(input.type === "menu"){
+		let reponseMess = reply(menuTemplate);
+		res.send(reponseMess);
+	}
+	else{
+		res.status(404).send({error : "type not found"});
 	}
 });
 
