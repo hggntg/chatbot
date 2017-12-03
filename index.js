@@ -325,10 +325,13 @@ app.post("/sendMessage",function(req, res){
 			}
 			else if(input.message === "NO"){
 				delete session[input.user];
-				res.send({text : "Bạn chỉ có thể chọn 'Đồng ý' hoặc 'Không'"});
+				let temp = Object.assign({}, menuTemplate);
+				temp.text = "Bạn đang muốn làm gì?";
+				let reponseMess = reply(temp);
+				res.send(reponseMess);
 			}
 			else{
-				res.send({text : "Bạn chỉ có thể chọn 'Đồng ý' hoặc 'Không'"});
+				res.send([{text : "Bạn chỉ có thể chọn 'Đồng ý' hoặc 'Không'"}]);
 			}
 		}
 	}
@@ -344,7 +347,7 @@ app.get("/reply", function(req, res){
 	let input = req.query;
 	if(input.type === "menu"){
 		let temp = Object.assign({}, menuTemplate);
-		temp.text = "Chào bạn! Bạn đang muôn làm gì?";
+		temp.text = "Chào bạn! Bạn đang muốn làm gì?";
 		let reponseMess = reply(temp);
 		res.send(reponseMess);
 	}
