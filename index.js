@@ -65,11 +65,11 @@ let sendMessageToGG = function(query, sessionId, isFirst, callback){
 
 let encodeMessage = function(message){
 	message = new Buffer(message, "utf-8").toString("base64");
-	message.replace(/\//g,"\\\/");
+	message = message.replace(/\//g,"\\\/");
 	return message;
 }
 let decodeMessage = function(message){
-	message.replace(/\\/g,"");
+	message = message.replace(/\\/g,"");
 	message = new Buffer(message, "base64").toString("utf-8");
 	return message;
 }
