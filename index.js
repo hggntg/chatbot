@@ -92,6 +92,7 @@ let getContext = function(input, callback){
 			callback(JSON.parse(body.toString()));
 		});
 	});
+	reqGet.end();
 }
 let setContext = function(name, lifespan, parameters){
 	return {
