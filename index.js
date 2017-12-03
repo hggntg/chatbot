@@ -42,7 +42,7 @@ const apiHost = "api.dialogflow.com";
 
 let sendMessageToGG = function(query, sessionId, contexts, callback){
 	let request = {
-		"contexts": [contexts],
+		"contexts": contexts,
 		"lang": "en",
 		"query": query,
 		"sessionId": sessionId
