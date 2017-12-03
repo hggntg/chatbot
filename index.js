@@ -286,8 +286,8 @@ app.post("/sendMessage",function(req, res){
 				if(reponseMess.status.code != 200){
 					session[input.user]["currentFlow"] = "create.designType";
 				}
-				session[input.user]["currentFlow"] = "create.level";
 				getContext(input, "createconstruction", function(context){
+					session[input.user]["currentFlow"] = "create.level";
 					template.text = reponseMess.result.speech;
 					let choosingEle = [
 					"constructionName","constructionAddress","constructionCity","constructionInvestor","constructionUnit",
