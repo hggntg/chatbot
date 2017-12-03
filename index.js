@@ -3,18 +3,6 @@ const express = require('express');
 
 let app = express();
 let session = [];
-let flow = {
-	"create" : {
-		"name" : "",
-		"address" : "",
-		"city" : "",
-		"investor" : "",
-		"unit" : "",
-		"type" : "",
-		"designType" : "",
-		"level" : "" 
-	}
-};
 let getValue = function(obj, path){
 	if(typeof obj !== "object"){
 		return null;
@@ -79,10 +67,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.post("/sendMessage",function(req, res){
 	let input = req.body;
 	if(input.flow === "create"){
-		if(!session[input.user])
+		if(!session[input.user]){
 			session[input.user] = {};
-		if(!session[input.user]["create"]){
-			session[input.user]["create"] = Object.assign({}, flow.create);
 			session[input.user]["currentFlow"] = null;
 		}
 		let requestMessage = "";
@@ -142,10 +128,17 @@ app.post("/sendMessage",function(req, res){
 				res.send(reponseMess);
 			});
 		}
-		if(session[input.user]["currentFlow"] === "create.designType" && input.message === "Ok"){
-			//To do : Send query api
-		}
+		if(session[input.user]["currentFlow"] === "create.designType"){
+			if(input.message === "OK"){
+				delete session[input.user];
+			}
+			else if(input.message === "NO"){
+				delete session[input.user];
+			}
+			else{
 
+			}
+		}
 	}
 	else if(input.flow === "update"){
 
