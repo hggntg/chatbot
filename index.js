@@ -65,15 +65,12 @@ let sendMessageToGG = function(query, sessionId, isFirst, callback){
 
 let encodeMessage = function(message){
 	message = new Buffer(message, "utf-8").toString("base64");
-	message = message.replace(/\//g,"\\\/");
-	console.log(message);
+	message = message.replace(/\//g,"hspskb");
 	return message;
 }
 let decodeMessage = function(message){
-	message = message.replace(/\\/g,"");
-	console.log(message);
+	message = message.replace(/hspskb/g,"\/");
 	message = new Buffer(message, "base64").toString("utf-8");
-	console.log(message);
 	return message;
 }
 let getContext = function(input, contextName, callback){
