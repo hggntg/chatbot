@@ -63,7 +63,7 @@ let sendMessageToGG = function(query, sessionId, contexts, callback){
 	reqPost.end();
 }
 let convertMessage = function(message){
-	message = jsesc(message).replace(/ /g,"rek");
+	message = jsesc(message,{json : true}).replace(/ /g,"rek");
 	return message;
 }
 
