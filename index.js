@@ -38,7 +38,7 @@ const DEV_TOKEN = "";
 const bodyParser = require('body-parser');
 
 
-const apiHost = "https://api.dialogflow.com/v1/";
+const apiHost = "api.dialogflow.com";
 
 let sendMessageToGG = function(query, sessionId, contexts, callback){
 	let request = {
@@ -50,7 +50,7 @@ let sendMessageToGG = function(query, sessionId, contexts, callback){
 	let postBody = JSON.stringify(request);
 	let reqPost = https.request({
 		host : apiHost,
-		path : "query",
+		path : "/v1/query",
 		method : "POST",
 		headers :{
 			"Content-Type" : "application/json",
@@ -58,7 +58,16 @@ let sendMessageToGG = function(query, sessionId, contexts, callback){
 			Authorization: "Bearer " + CLIENT_TOKEN
 		}
 	},function(res){
-		callback(res);
+		var chunks = [];
+
+		res.on("data", function (chunk) {
+			chunks.push(chunk);
+		});
+
+		res.on("end", function () {
+			var body = Buffer.concat(chunks);
+			callback(body.toString());
+		});
 	});
 	reqPost.write(postBody);
 	reqPost.end();
