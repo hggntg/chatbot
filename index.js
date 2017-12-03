@@ -157,6 +157,14 @@ let yesOrNoTemplate = {
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
+app.all("/*",function(req, res, next){
+	res.header('Access-Control-Allow-Origin', '*');
+	res.header('Access-Control-Allow-Methods', 'OPTIONS, GET, PUT, POST, DELETE');
+	res.header('Access-Control-Allow-Headers', 'Content-Type');
+
+	next();
+})
+
 app.post("/sendMessage",function(req, res){
 	let input = req.body;
 	let template = createTemplate("");
