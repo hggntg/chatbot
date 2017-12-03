@@ -257,6 +257,7 @@ app.post("/sendMessage",function(req, res){
 					for(let i = 0; i < designTypesLength; i++){
 						buttons.push(createButton(designTypes[i], "select", designTypes[i]));
 					}
+					template.buttons = buttons;
 					res.send(reply(template));
 				}
 			});
@@ -275,6 +276,7 @@ app.post("/sendMessage",function(req, res){
 				for(let i = 0; i < levelsLength; i++){
 					buttons.push(createButton(levels[i], "select", levels[i]));
 				}
+				template.buttons = buttons;
 				res.send(reponseMess);
 			});
 		}
@@ -298,7 +300,7 @@ app.post("/sendMessage",function(req, res){
 					let temp = Object.assign({}, yesOrNoTemplates);
 					temp.text = "Bạn có muốn lưu công trình này?"
 					res.send(reply(template, temp));
-				})
+				});
 			});
 		}
 		if(session[input.user]["currentFlow"] === "create.level"){
