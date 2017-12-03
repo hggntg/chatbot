@@ -113,7 +113,7 @@ let createButton = function(title, action, value){
 let createTemplate = function(text, buttons){
 	return {
 		text : text,
-		buttons : buttons || 
+		buttons : buttons || undefined
 	}
 }
 
