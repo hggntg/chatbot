@@ -55,7 +55,7 @@ let sendMessageToGG = function(query, sessionId, contexts, callback){
 
 		res.on("end", function () {
 			var body = Buffer.concat(chunks);
-			callback(JSON.parse(body.toString()));
+			callback(body.toString());
 		});
 	});
 	reqPost.write(postBody);
