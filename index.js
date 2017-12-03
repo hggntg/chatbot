@@ -68,7 +68,7 @@ let encodeMessage = function(message){
 	return message;
 }
 let decodeMessage = function(message){
-	message = new Buffer(message).toString("utf-8");
+	message = new Buffer(message, "base64").toString("utf-8");
 	return message;
 }
 let getContext = function(input, contextName, callback){
