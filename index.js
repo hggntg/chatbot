@@ -63,7 +63,7 @@ let sendMessageToGG = function(query, sessionId, contexts, callback){
 	reqPost.end();
 }
 let convertMessage = function(message){
-	message = utf8.encode(message).replace(/ /g,"rek");
+	message = encodeURI(message).replace(/%20/g,"rek");
 	return message;
 }
 
