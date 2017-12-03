@@ -158,16 +158,6 @@ app.post("/sendMessage",function(req, res){
 				res.send(reponseMess);
 			});
 		}
-		else if(session[input.user]["currentFlow"] === "create.level"){
-			requestMessage = "level " + convertMessage(input.message);
-			sendMessageToGG(requestMessage, input.user, [], (reponseMess) => {
-				if(reponseMess.status.code != 200){
-					session[input.user]["currentFlow"] = "create.designType";
-				}
-				session[input.user]["currentFlow"] = "create.level";
-				res.send(reponseMess);
-			});
-		}
 		if(session[input.user]["currentFlow"] === "create.level"){
 			if(input.message === "OK"){
 				delete session[input.user];
