@@ -269,7 +269,7 @@ app.post("/sendMessage",function(req, res){
 					session[input.user]["currentFlow"] = "create.type";
 				}
 				session[input.user]["currentFlow"] = "create.designType";
-				template.text = reponseMess.reulst.speech;
+				template.text = reponseMess.result.speech;
 				let levels = ['Cấp I', 'Cấp II', 'Cấp III', 'Cấp IV', 'Cấp đặc biệt'];
 				let levelsLength = levels.length;
 				let buttons = [];
