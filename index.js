@@ -1,6 +1,5 @@
 const https = require('https');
 const express = require('express');
-const utf8 = require('utf8');
 
 let app = express();
 let session = [];
@@ -63,7 +62,7 @@ let sendMessageToGG = function(query, sessionId, contexts, callback){
 	reqPost.end();
 }
 let convertMessage = function(message){
-	message = encodeURI(message).replace(/%20/g,"rek");
+	message = new Buffer(message).toString("base64");
 	return message;
 }
 
