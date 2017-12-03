@@ -349,6 +349,7 @@ app.get("/reply", function(req, res){
 		let temp = Object.assign({}, menuTemplate);
 		temp.text = "Chào bạn! Bạn đang muốn làm gì?";
 		let reponseMess = reply(temp);
+		delete session[input.user];
 		res.send(reponseMess);
 	}
 	else{
