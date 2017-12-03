@@ -94,7 +94,7 @@ app.post("/sendMessage",function(req, res){
 		let requestMessage = "";
 		if(session[input.user]["currentFlow"] === null){
 			requestMessage = "name " + encodeMessage(input.message);
-			sendMessageToGG(requestMessage, input.user, [setContext("createConstruction", 8, {})], (reponseMess) => {
+			sendMessageToGG(requestMessage, input.user, [setContext("createconstruction", 8, {})], (reponseMess) => {
 				if(reponseMess.status.code != 200){
 					session[input.user]["currentFlow"] = null;
 				}
