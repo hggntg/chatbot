@@ -64,7 +64,7 @@ let sendMessageToGG = function(query, sessionId, isFirst, callback){
 }
 
 let encodeMessage = function(message){
-	message = new Buffer(message).toString("base64");
+	message = new Buffer(message, "utf-8").toString("base64");
 	return message;
 }
 let decodeMessage = function(message){
