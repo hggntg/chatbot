@@ -1,6 +1,5 @@
 const https = require('https');
 const express = require('express');
-const jsesc = require('jsesc');
 
 let app = express();
 let session = [];
@@ -74,7 +73,7 @@ app.post("/sendMessage",function(req, res){
 		}
 		let requestMessage = "";
 		if(session[input.user]["currentFlow"] === null){
-			requestMessage = "name " + jsesc(input.message);
+			requestMessage = "name " + encodeURI(input.message);
 			session[input.user]["currentFlow"] = "create.name";
 			sendMessageToGG(requestMessage, input.user, [], (reponseMess) => {
 				if(reponseMess.status.code != 200){
@@ -84,7 +83,7 @@ app.post("/sendMessage",function(req, res){
 			});
 		}
 		else if(session[input.user]["currentFlow"] === "create.name"){
-			requestMessage = "address " + jsesc(input.message);
+			requestMessage = "address " + encodeURI(input.message);
 			session[input.user]["currentFlow"] = "create.address";
 			sendMessageToGG(requestMessage, input.user, [], (reponseMess) => {
 				if(reponseMess.status.code != 200){
@@ -94,7 +93,7 @@ app.post("/sendMessage",function(req, res){
 			});
 		}
 		else if(session[input.user]["currentFlow"] === "create.address"){
-			requestMessage = "city " + jsesc(input.message);
+			requestMessage = "city " + encodeURI(input.message);
 			session[input.user]["currentFlow"] = "create.city";
 			sendMessageToGG(requestMessage, input.user, [], (reponseMess) => {
 				if(reponseMess.status.code != 200){
@@ -104,7 +103,7 @@ app.post("/sendMessage",function(req, res){
 			});
 		}
 		else if(session[input.user]["currentFlow"] === "create.city"){
-			requestMessage = "investor " + jsesc(input.message);
+			requestMessage = "investor " + encodeURI(input.message);
 			session[input.user]["currentFlow"] = "create.investor";
 			sendMessageToGG(requestMessage, input.user, [], (reponseMess) => {
 				if(reponseMess.status.code != 200){
@@ -114,7 +113,7 @@ app.post("/sendMessage",function(req, res){
 			});
 		}
 		else if(session[input.user]["currentFlow"] === "create.investor"){
-			requestMessage = "unit " + jsesc(input.message);
+			requestMessage = "unit " + encodeURI(input.message);
 			session[input.user]["currentFlow"] = "create.unit";
 			sendMessageToGG(requestMessage, input.user, [], (reponseMess) => {
 				if(reponseMess.status.code != 200){
@@ -124,7 +123,7 @@ app.post("/sendMessage",function(req, res){
 			});
 		}
 		else if(session[input.user]["currentFlow"] === "create.unit"){
-			requestMessage = "type " + jsesc(input.message);
+			requestMessage = "type " + encodeURI(input.message);
 			session[input.user]["currentFlow"] = "create.type";
 			sendMessageToGG(requestMessage, input.user, [], (reponseMess) => {
 				if(reponseMess.status.code != 200){
@@ -134,7 +133,7 @@ app.post("/sendMessage",function(req, res){
 			});
 		}
 		else if(session[input.user]["currentFlow"] === "create.type"){
-			requestMessage = "designType " + jsesc(input.message);
+			requestMessage = "designType " + encodeURI(input.message);
 			session[input.user]["currentFlow"] = "create.designType";
 			sendMessageToGG(requestMessage, input.user, [], (reponseMess) => {
 				if(reponseMess.status.code != 200){
@@ -144,7 +143,7 @@ app.post("/sendMessage",function(req, res){
 			});
 		}
 		else if(session[input.user]["currentFlow"] === "create.designType"){
-			requestMessage = "level " + jsesc(input.message);
+			requestMessage = "level " + encodeURI(input.message);
 			session[input.user]["currentFlow"] = "create.level";
 			sendMessageToGG(requestMessage, input.user, [], (reponseMess) => {
 				if(reponseMess.status.code != 200){
@@ -153,7 +152,7 @@ app.post("/sendMessage",function(req, res){
 				res.send(reponseMess);
 			});
 		}
-		if(session[input.user]["currentFlow"] === "create.designType"){
+		if(session[input.user]["currentFlow"] === "create.level"){
 			if(input.message === "OK"){
 				delete session[input.user];
 			}
