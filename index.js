@@ -156,7 +156,7 @@ app.post("/sendMessage",function(req, res){
 				else{
 					session[input.user]["currentFlow"] = "create.name";
 					template.text = reponseMess.speech;
-					res.send(reply(template));
+					res.send(reponseMess);
 				}
 			});
 		}
