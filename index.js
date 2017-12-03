@@ -64,12 +64,12 @@ let sendMessageToGG = function(query, sessionId, isFirst, callback){
 }
 
 let encodeMessage = function(message){
-	console.log(message);
 	message = new Buffer(message, "utf-8").toString("base64");
-	console.log(message);
+	message.repalce(/\//g,"\\\/");
 	return message;
 }
 let decodeMessage = function(message){
+	message.repalce(/\\/g,"");
 	message = new Buffer(message, "base64").toString("utf-8");
 	return message;
 }
