@@ -1,6 +1,6 @@
 const https = require('https');
 const express = require('express');
-const jsesc = require('jsesc');
+const utf8 = require('utf8');
 
 let app = express();
 let session = [];
@@ -63,7 +63,7 @@ let sendMessageToGG = function(query, sessionId, contexts, callback){
 	reqPost.end();
 }
 let convertMessage = function(message){
-	message = jsesc(message,{json : true}).replace(/ /g,"rek");
+	message = utf8.encode(message).replace(/ /g,"rek");
 	return message;
 }
 
