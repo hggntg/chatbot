@@ -1,5 +1,6 @@
 const https = require('https');
 const express = require('express');
+const jsesc = require('jsesc');
 
 let app = express();
 let session = [];
@@ -62,8 +63,7 @@ let sendMessageToGG = function(query, sessionId, contexts, callback){
 	reqPost.end();
 }
 let convertMessage = function(message){
-	message = encodeURI(message);
-	console.log(message);
+	message = jsesc(message);
 	return message;
 }
 
