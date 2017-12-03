@@ -297,7 +297,7 @@ app.post("/sendMessage",function(req, res){
 					for(let i = 0; i < choosingEleLength; i++){
 						template.text += "\\n" + context[choosingEle[i]]; 
 					}
-					let temp = Object.assign({}, yesOrNoTemplates);
+					let temp = Object.assign({}, yesOrNoTemplate);
 					temp.text = "Bạn có muốn lưu công trình này?"
 					res.send(reply(template, temp));
 				});
