@@ -79,7 +79,7 @@ app.post("/sendMessage",function(req, res){
 		let requestMessage = "";
 		if(session[input.user]["currentFlow"] === null){
 			requestMessage = "name " + convertMessage(input.message);
-			sendMessageToGG(requestMessage, input.user, [], (reponseMess) => {
+			sendMessageToGG(requestMessage, input.user, ["createConstruction"], (reponseMess) => {
 				if(reponseMess.status.code != 200){
 					session[input.user]["currentFlow"] = null;
 				}
@@ -89,7 +89,7 @@ app.post("/sendMessage",function(req, res){
 		}
 		else if(session[input.user]["currentFlow"] === "create.name"){
 			requestMessage = "address " + convertMessage(input.message);
-			sendMessageToGG(requestMessage, input.user, [], (reponseMess) => {
+			sendMessageToGG(requestMessage, input.user, ["createConstruction"], (reponseMess) => {
 				if(reponseMess.status.code != 200){
 					session[input.user]["currentFlow"] = "create.name";
 				}
@@ -99,7 +99,7 @@ app.post("/sendMessage",function(req, res){
 		}
 		else if(session[input.user]["currentFlow"] === "create.address"){
 			requestMessage = "city " + convertMessage(input.message);
-			sendMessageToGG(requestMessage, input.user, [], (reponseMess) => {
+			sendMessageToGG(requestMessage, input.user, ["createConstruction"], (reponseMess) => {
 				if(reponseMess.status.code != 200){
 					session[input.user]["currentFlow"] = "create.address";
 				}
@@ -109,7 +109,7 @@ app.post("/sendMessage",function(req, res){
 		}
 		else if(session[input.user]["currentFlow"] === "create.city"){
 			requestMessage = "investor " + convertMessage(input.message);
-			sendMessageToGG(requestMessage, input.user, [], (reponseMess) => {
+			sendMessageToGG(requestMessage, input.user, ["createConstruction"], (reponseMess) => {
 				if(reponseMess.status.code != 200){
 					session[input.user]["currentFlow"] = "create.city";
 				}
@@ -119,7 +119,7 @@ app.post("/sendMessage",function(req, res){
 		}
 		else if(session[input.user]["currentFlow"] === "create.investor"){
 			requestMessage = "unit " + convertMessage(input.message);
-			sendMessageToGG(requestMessage, input.user, [], (reponseMess) => {
+			sendMessageToGG(requestMessage, input.user, ["createConstruction"], (reponseMess) => {
 				if(reponseMess.status.code != 200){
 					session[input.user]["currentFlow"] = "create.investor";
 				}
@@ -129,7 +129,7 @@ app.post("/sendMessage",function(req, res){
 		}
 		else if(session[input.user]["currentFlow"] === "create.unit"){
 			requestMessage = "type " + convertMessage(input.message);
-			sendMessageToGG(requestMessage, input.user, [], (reponseMess) => {
+			sendMessageToGG(requestMessage, input.user, ["createConstruction"], (reponseMess) => {
 				if(reponseMess.status.code != 200){
 					session[input.user]["currentFlow"] = "create.unit";
 				}
@@ -139,7 +139,7 @@ app.post("/sendMessage",function(req, res){
 		}
 		else if(session[input.user]["currentFlow"] === "create.type"){
 			requestMessage = "designType " + convertMessage(input.message);
-			sendMessageToGG(requestMessage, input.user, [], (reponseMess) => {
+			sendMessageToGG(requestMessage, input.user, ["createConstruction"], (reponseMess) => {
 				if(reponseMess.status.code != 200){
 					session[input.user]["currentFlow"] = "create.type";
 				}
