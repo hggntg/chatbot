@@ -40,9 +40,9 @@ let sendMessageToGG = function(query, sessionId, contexts, callback){
 	let reqPost = https.request({
 		host : apiHost,
 		path : "/v1/query",
-		method : "GET",
+		method : "POST",
 		headers :{
-			"Content-Type" : "application/x-www-form-urlencoded, charset=utf-8",
+			"Content-Type" : "application/json, charset=utf-8",
 			"Content-Length" : postBody.length,
 			Authorization: "Bearer " + CLIENT_TOKEN
 		}
@@ -55,12 +55,16 @@ let sendMessageToGG = function(query, sessionId, contexts, callback){
 
 		res.on("end", function () {
 			var body = Buffer.concat(chunks);
-			console.log(body.toString());
-			callback(body.toString());
+			callback(JSON.parse(body.toString()));
 		});
 	});
 	reqPost.write(postBody);
 	reqPost.end();
+}
+let convertMessage = function(message){
+	message = encodeURI(message);
+	console.log(message);
+	return message;
 }
 
 app.use(bodyParser.json());
@@ -75,7 +79,7 @@ app.post("/sendMessage",function(req, res){
 		}
 		let requestMessage = "";
 		if(session[input.user]["currentFlow"] === null){
-			requestMessage = "name " + input.message;
+			requestMessage = "name " + convertMessage(input.message);
 			session[input.user]["currentFlow"] = "create.name";
 			sendMessageToGG(requestMessage, input.user, [], (reponseMess) => {
 				if(reponseMess.status.code != 200){
@@ -85,7 +89,7 @@ app.post("/sendMessage",function(req, res){
 			});
 		}
 		else if(session[input.user]["currentFlow"] === "create.name"){
-			requestMessage = "address " + input.message;
+			requestMessage = "address " + convertMessage(input.message);
 			session[input.user]["currentFlow"] = "create.address";
 			sendMessageToGG(requestMessage, input.user, [], (reponseMess) => {
 				if(reponseMess.status.code != 200){
@@ -95,7 +99,7 @@ app.post("/sendMessage",function(req, res){
 			});
 		}
 		else if(session[input.user]["currentFlow"] === "create.address"){
-			requestMessage = "city " + input.message;
+			requestMessage = "city " + convertMessage(input.message);
 			session[input.user]["currentFlow"] = "create.city";
 			sendMessageToGG(requestMessage, input.user, [], (reponseMess) => {
 				if(reponseMess.status.code != 200){
@@ -105,7 +109,7 @@ app.post("/sendMessage",function(req, res){
 			});
 		}
 		else if(session[input.user]["currentFlow"] === "create.city"){
-			requestMessage = "investor " + input.message;
+			requestMessage = "investor " + convertMessage(input.message);
 			session[input.user]["currentFlow"] = "create.investor";
 			sendMessageToGG(requestMessage, input.user, [], (reponseMess) => {
 				if(reponseMess.status.code != 200){
@@ -115,7 +119,7 @@ app.post("/sendMessage",function(req, res){
 			});
 		}
 		else if(session[input.user]["currentFlow"] === "create.investor"){
-			requestMessage = "unit " + input.message;
+			requestMessage = "unit " + convertMessage(input.message);
 			session[input.user]["currentFlow"] = "create.unit";
 			sendMessageToGG(requestMessage, input.user, [], (reponseMess) => {
 				if(reponseMess.status.code != 200){
@@ -125,7 +129,7 @@ app.post("/sendMessage",function(req, res){
 			});
 		}
 		else if(session[input.user]["currentFlow"] === "create.unit"){
-			requestMessage = "type " + input.message;
+			requestMessage = "type " + convertMessage(input.message);
 			session[input.user]["currentFlow"] = "create.type";
 			sendMessageToGG(requestMessage, input.user, [], (reponseMess) => {
 				if(reponseMess.status.code != 200){
@@ -135,7 +139,7 @@ app.post("/sendMessage",function(req, res){
 			});
 		}
 		else if(session[input.user]["currentFlow"] === "create.type"){
-			requestMessage = "designType " + input.message;
+			requestMessage = "designType " + convertMessage(input.message);
 			session[input.user]["currentFlow"] = "create.designType";
 			sendMessageToGG(requestMessage, input.user, [], (reponseMess) => {
 				if(reponseMess.status.code != 200){
@@ -145,7 +149,7 @@ app.post("/sendMessage",function(req, res){
 			});
 		}
 		else if(session[input.user]["currentFlow"] === "create.designType"){
-			requestMessage = "level " + input.message;
+			requestMessage = "level " + convertMessage(input.message);
 			session[input.user]["currentFlow"] = "create.level";
 			sendMessageToGG(requestMessage, input.user, [], (reponseMess) => {
 				if(reponseMess.status.code != 200){
