@@ -101,10 +101,10 @@ let reply = function(params){
 	let templates = arguments;
 	let response = [];
 	let templatesLength = templates.length;
-	for(let i = 0; i < templatesLength; i++){
+	for(let i = 0; i < templatesLength - 1; i++){
 		response.push({text : templates[i].text, buttons : templates[i].buttons});
 	}
-	return response;
+	return {messages : response, flow : arguments[templatesLength - 1]};
 }
 
 let createButton = function(title, action, value){
@@ -179,12 +179,12 @@ app.post("/sendMessage",function(req, res){
 			sendMessageToGG(requestMessage, input.user, true, (reponseMess) => {
 				if(reponseMess.status.code != 200){
 					session[input.user]["currentFlow"] = null;
-					res.send(reply(template));
+					res.send(reply(template, session[input.user]["currentFlow"]));
 				}
 				else{
 					session[input.user]["currentFlow"] = "create.name";
 					template.text = reponseMess.result.speech;
-					res.send(reply(template));
+					res.send(reply(template, session[input.user]["currentFlow"]));
 				}
 			});
 		}
@@ -193,12 +193,12 @@ app.post("/sendMessage",function(req, res){
 			sendMessageToGG(requestMessage, input.user, false, (reponseMess) => {
 				if(reponseMess.status.code != 200){
 					session[input.user]["currentFlow"] = "create.name";
-					res.send(reply(template));
+					res.send(reply(template, session[input.user]["currentFlow"]));
 				}
 				else{
 					session[input.user]["currentFlow"] = "create.address";
 					template.text = reponseMess.result.speech;
-					res.send(reply(template));
+					res.send(reply(template, session[input.user]["currentFlow"]));
 				}
 			});
 		}
@@ -207,12 +207,12 @@ app.post("/sendMessage",function(req, res){
 			sendMessageToGG(requestMessage, input.user, false, (reponseMess) => {
 				if(reponseMess.status.code != 200){
 					session[input.user]["currentFlow"] = "create.address";
-					res.send(reply(template));
+					res.send(reply(template, session[input.user]["currentFlow"]));
 				}
 				else{
 					session[input.user]["currentFlow"] = "create.city";
 					template.text = reponseMess.result.speech;
-					res.send(reply(template));
+					res.send(reply(template, session[input.user]["currentFlow"]));
 				}
 			});
 		}
@@ -221,12 +221,12 @@ app.post("/sendMessage",function(req, res){
 			sendMessageToGG(requestMessage, input.user, false, (reponseMess) => {
 				if(reponseMess.status.code != 200){
 					session[input.user]["currentFlow"] = "create.city";
-					res.send(reply(template));
+					res.send(reply(template, session[input.user]["currentFlow"]));
 				}
 				else{
 					session[input.user]["currentFlow"] = "create.investor";
 					template.text = reponseMess.result.speech;
-					res.send(reply(template));
+					res.send(reply(template, session[input.user]["currentFlow"]));
 				}
 			});
 		}
@@ -235,7 +235,7 @@ app.post("/sendMessage",function(req, res){
 			sendMessageToGG(requestMessage, input.user, false, (reponseMess) => {
 				if(reponseMess.status.code != 200){
 					session[input.user]["currentFlow"] = "create.investor";
-					res.send(reply(template));
+					res.send(reply(template, session[input.user]["currentFlow"]));
 				}
 				else{
 					session[input.user]["currentFlow"] = "create.unit";
@@ -247,7 +247,7 @@ app.post("/sendMessage",function(req, res){
 						buttons.push(createButton(types[i], "select", types[i]));
 					}
 					template.buttons = buttons;
-					res.send(reply(template));
+					res.send(reply(template, session[input.user]["currentFlow"]));
 				}
 			});
 		}
@@ -256,7 +256,7 @@ app.post("/sendMessage",function(req, res){
 			sendMessageToGG(requestMessage, input.user, false, (reponseMess) => {
 				if(reponseMess.status.code != 200){
 					session[input.user]["currentFlow"] = "create.unit";
-					res.send(reply(template));
+					res.send(reply(template, session[input.user]["currentFlow"]));
 				}
 				else{
 					session[input.user]["currentFlow"] = "create.type";
@@ -268,7 +268,7 @@ app.post("/sendMessage",function(req, res){
 						buttons.push(createButton(designTypes[i], "select", designTypes[i]));
 					}
 					template.buttons = buttons;
-					res.send(reply(template));
+					res.send(reply(template, session[input.user]["currentFlow"]));
 				}
 			});
 		}
@@ -287,7 +287,7 @@ app.post("/sendMessage",function(req, res){
 					buttons.push(createButton(levels[i], "select", levels[i]));
 				}
 				template.buttons = buttons;
-				res.send(reply(template));
+				res.send(reply(template, session[input.user]["currentFlow"]));
 			});
 		}
 		else if(session[input.user]["currentFlow"] === "create.designType"){
@@ -312,7 +312,7 @@ app.post("/sendMessage",function(req, res){
 					}
 					let temp = Object.assign({}, yesOrNoTemplate);
 					temp.text = "Bạn có muốn lưu công trình này?"
-					res.send(reply(template, temp));
+					res.send(reply(template, temp, session[input.user]["currentFlow"]));
 				});
 			});
 		}
@@ -345,7 +345,7 @@ app.get("/reply", function(req, res){
 	if(input.type === "menu"){
 		let temp = Object.assign({}, menuTemplate);
 		temp.text = "Chào bạn! Bạn đang muôn làm gì?";
-		let reponseMess = reply(temp);
+		let reponseMess = reply(temp, null);
 		res.send(reponseMess);
 	}
 	else{
