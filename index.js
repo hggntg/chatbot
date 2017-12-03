@@ -1,5 +1,6 @@
 const https = require('https');
 const express = require('express');
+const jsesc = require('jsesc');
 
 let app = express();
 let session = [];
@@ -73,58 +74,82 @@ app.post("/sendMessage",function(req, res){
 		}
 		let requestMessage = "";
 		if(session[input.user]["currentFlow"] === null){
-			requestMessage = "name " + input.message;
+			requestMessage = "name " + jsesc(input.message);
 			session[input.user]["currentFlow"] = "create.name";
 			sendMessageToGG(requestMessage, input.user, [], (reponseMess) => {
+				if(reponseMess.status.code != 200){
+					session[input.user]["currentFlow"] = null;
+				}
 				res.send(reponseMess);
 			});
 		}
 		else if(session[input.user]["currentFlow"] === "create.name"){
-			requestMessage = "address " + input.message;
+			requestMessage = "address " + jsesc(input.message);
 			session[input.user]["currentFlow"] = "create.address";
 			sendMessageToGG(requestMessage, input.user, [], (reponseMess) => {
+				if(reponseMess.status.code != 200){
+					session[input.user]["currentFlow"] = "create.name";
+				}
 				res.send(reponseMess);
 			});
 		}
 		else if(session[input.user]["currentFlow"] === "create.address"){
-			requestMessage = "city " + input.message;
+			requestMessage = "city " + jsesc(input.message);
 			session[input.user]["currentFlow"] = "create.city";
 			sendMessageToGG(requestMessage, input.user, [], (reponseMess) => {
+				if(reponseMess.status.code != 200){
+					session[input.user]["currentFlow"] = "create.address";
+				}
 				res.send(reponseMess);
 			});
 		}
 		else if(session[input.user]["currentFlow"] === "create.city"){
-			requestMessage = "investor " + input.message;
+			requestMessage = "investor " + jsesc(input.message);
 			session[input.user]["currentFlow"] = "create.investor";
 			sendMessageToGG(requestMessage, input.user, [], (reponseMess) => {
+				if(reponseMess.status.code != 200){
+					session[input.user]["currentFlow"] = "create.city";
+				}
 				res.send(reponseMess);
 			});
 		}
 		else if(session[input.user]["currentFlow"] === "create.investor"){
-			requestMessage = "unit " + input.message;
+			requestMessage = "unit " + jsesc(input.message);
 			session[input.user]["currentFlow"] = "create.unit";
 			sendMessageToGG(requestMessage, input.user, [], (reponseMess) => {
+				if(reponseMess.status.code != 200){
+					session[input.user]["currentFlow"] = "create.investor";
+				}
 				res.send(reponseMess);
 			});
 		}
 		else if(session[input.user]["currentFlow"] === "create.unit"){
-			requestMessage = "type " + input.message;
+			requestMessage = "type " + jsesc(input.message);
 			session[input.user]["currentFlow"] = "create.type";
 			sendMessageToGG(requestMessage, input.user, [], (reponseMess) => {
+				if(reponseMess.status.code != 200){
+					session[input.user]["currentFlow"] = "create.unit";
+				}
 				res.send(reponseMess);
 			});
 		}
 		else if(session[input.user]["currentFlow"] === "create.type"){
-			requestMessage = "designType " + input.message;
+			requestMessage = "designType " + jsesc(input.message);
 			session[input.user]["currentFlow"] = "create.designType";
 			sendMessageToGG(requestMessage, input.user, [], (reponseMess) => {
+				if(reponseMess.status.code != 200){
+					session[input.user]["currentFlow"] = "create.type";
+				}
 				res.send(reponseMess);
 			});
 		}
 		else if(session[input.user]["currentFlow"] === "create.designType"){
-			requestMessage = "level " + input.message;
+			requestMessage = "level " + jsesc(input.message);
 			session[input.user]["currentFlow"] = "create.level";
 			sendMessageToGG(requestMessage, input.user, [], (reponseMess) => {
+				if(reponseMess.status.code != 200){
+					session[input.user]["currentFlow"] = "create.designType";
+				}
 				res.send(reponseMess);
 			});
 		}
@@ -136,7 +161,7 @@ app.post("/sendMessage",function(req, res){
 				delete session[input.user];
 			}
 			else{
-
+				res.send({text : "Bạn chỉ có thể chọn 'Đồng ý' hoặc 'Không'"});
 			}
 		}
 	}
