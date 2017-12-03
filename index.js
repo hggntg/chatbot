@@ -76,7 +76,7 @@ let decodeMessage = function(message){
 let getContext = function(input, contextName, callback){
 	let reqGet = https.request({
 		host : apiHost,
-		path : `/v1/contexts/${contextName}?v=20150910&sessionId=${input.user}`,
+		path : `/v1/contexts/${contextName}?v=20150910&sessionId=${new Buffer(input.user.substring(0,24)).toString("base64")}`,
 		method : "GET",
 		headers :{
 			"Content-Type" : "application/json, charset=utf-8",
