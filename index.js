@@ -80,93 +80,92 @@ app.post("/sendMessage",function(req, res){
 		let requestMessage = "";
 		if(session[input.user]["currentFlow"] === null){
 			requestMessage = "name " + convertMessage(input.message);
-			session[input.user]["currentFlow"] = "create.name";
 			sendMessageToGG(requestMessage, input.user, [], (reponseMess) => {
 				if(reponseMess.status.code != 200){
 					session[input.user]["currentFlow"] = null;
 				}
+				session[input.user]["currentFlow"] = "create.name";
 				res.send(reponseMess);
 			});
 		}
 		else if(session[input.user]["currentFlow"] === "create.name"){
 			requestMessage = "address " + convertMessage(input.message);
-			session[input.user]["currentFlow"] = "create.address";
 			sendMessageToGG(requestMessage, input.user, [], (reponseMess) => {
 				if(reponseMess.status.code != 200){
 					session[input.user]["currentFlow"] = "create.name";
 				}
+				session[input.user]["currentFlow"] = "create.address";
 				res.send(reponseMess);
 			});
 		}
 		else if(session[input.user]["currentFlow"] === "create.address"){
 			requestMessage = "city " + convertMessage(input.message);
-			session[input.user]["currentFlow"] = "create.city";
 			sendMessageToGG(requestMessage, input.user, [], (reponseMess) => {
 				if(reponseMess.status.code != 200){
 					session[input.user]["currentFlow"] = "create.address";
 				}
+				session[input.user]["currentFlow"] = "create.city";
 				res.send(reponseMess);
 			});
 		}
 		else if(session[input.user]["currentFlow"] === "create.city"){
 			requestMessage = "investor " + convertMessage(input.message);
-			session[input.user]["currentFlow"] = "create.investor";
 			sendMessageToGG(requestMessage, input.user, [], (reponseMess) => {
 				if(reponseMess.status.code != 200){
 					session[input.user]["currentFlow"] = "create.city";
 				}
+				session[input.user]["currentFlow"] = "create.investor";
 				res.send(reponseMess);
 			});
 		}
 		else if(session[input.user]["currentFlow"] === "create.investor"){
 			requestMessage = "unit " + convertMessage(input.message);
-			session[input.user]["currentFlow"] = "create.unit";
 			sendMessageToGG(requestMessage, input.user, [], (reponseMess) => {
 				if(reponseMess.status.code != 200){
 					session[input.user]["currentFlow"] = "create.investor";
 				}
+				session[input.user]["currentFlow"] = "create.unit";
 				res.send(reponseMess);
 			});
 		}
 		else if(session[input.user]["currentFlow"] === "create.unit"){
 			requestMessage = "type " + convertMessage(input.message);
-			session[input.user]["currentFlow"] = "create.type";
 			sendMessageToGG(requestMessage, input.user, [], (reponseMess) => {
 				if(reponseMess.status.code != 200){
 					session[input.user]["currentFlow"] = "create.unit";
 				}
+				session[input.user]["currentFlow"] = "create.type";
 				res.send(reponseMess);
 			});
 		}
 		else if(session[input.user]["currentFlow"] === "create.type"){
 			requestMessage = "designType " + convertMessage(input.message);
-			session[input.user]["currentFlow"] = "create.designType";
 			sendMessageToGG(requestMessage, input.user, [], (reponseMess) => {
 				if(reponseMess.status.code != 200){
 					session[input.user]["currentFlow"] = "create.type";
 				}
+				session[input.user]["currentFlow"] = "create.designType";
 				res.send(reponseMess);
 			});
 		}
 		else if(session[input.user]["currentFlow"] === "create.designType"){
 			requestMessage = "level " + convertMessage(input.message);
-			session[input.user]["currentFlow"] = "create.level";
 			sendMessageToGG(requestMessage, input.user, [], (reponseMess) => {
 				if(reponseMess.status.code != 200){
 					session[input.user]["currentFlow"] = "create.designType";
 				}
+				session[input.user]["currentFlow"] = "create.level";
 				res.send(reponseMess);
 			});
 		}
 		else if(session[input.user]["currentFlow"] === "create.level"){
 			requestMessage = "level " + convertMessage(input.message);
-			session[input.user]["currentFlow"] = "create.level";
 			sendMessageToGG(requestMessage, input.user, [], (reponseMess) => {
 				if(reponseMess.status.code != 200){
 					session[input.user]["currentFlow"] = "create.designType";
 				}
+				session[input.user]["currentFlow"] = "create.level";
 				res.send(reponseMess);
-				return;
 			});
 		}
 		if(session[input.user]["currentFlow"] === "create.level"){
