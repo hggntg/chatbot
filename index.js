@@ -155,8 +155,8 @@ app.post("/sendMessage",function(req, res){
 				}
 				else{
 					session[input.user]["currentFlow"] = "create.name";
-					template.text = reponseMess.speech;
-					res.send(reponseMess);
+					template.text = reponseMess.result.speech;
+					res.send(reply(template));
 				}
 			});
 		}
@@ -169,7 +169,7 @@ app.post("/sendMessage",function(req, res){
 				}
 				else{
 					session[input.user]["currentFlow"] = "create.address";
-					template.text = reponseMess.speech;
+					template.text = reponseMess.result.speech;
 					res.send(reply(template));
 				}
 			});
@@ -183,7 +183,7 @@ app.post("/sendMessage",function(req, res){
 				}
 				else{
 					session[input.user]["currentFlow"] = "create.city";
-					template.text = reponseMess.speech;
+					template.text = reponseMess.result.speech;
 					res.send(reply(template));
 				}
 			});
@@ -197,7 +197,7 @@ app.post("/sendMessage",function(req, res){
 				}
 				else{
 					session[input.user]["currentFlow"] = "create.investor";
-					template.text = reponseMess.speech;
+					template.text = reponseMess.result.speech;
 					res.send(reply(template));
 				}
 			});
@@ -211,7 +211,7 @@ app.post("/sendMessage",function(req, res){
 				}
 				else{
 					session[input.user]["currentFlow"] = "create.unit";
-					template.text = reponseMess.speech;
+					template.text = reponseMess.result.speech;
 					let types = ['Dân dụng', 'Công nghiệp', 'Giao thông', 'Thủy lợi', 'Hạ tầng kỹ thuật'];
 					let typesLength = types.length;
 					let buttons = [];
