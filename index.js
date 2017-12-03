@@ -110,7 +110,7 @@ let createButton = function(title, action, value){
 	}
 }
 
-let createTemplate = function(text, buttons){
+let createTemplate = function(text, buttons = null){
 	return {
 		text : text,
 		buttons : buttons || undefined
@@ -139,6 +139,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.post("/sendMessage",function(req, res){
 	let input = req.body;
+	let template = createTemplate("");
 	if(input.flow === "create"){
 		if(!session[input.user]){
 			session[input.user] = {};
@@ -150,9 +151,13 @@ app.post("/sendMessage",function(req, res){
 			sendMessageToGG(requestMessage, input.user, true, (reponseMess) => {
 				if(reponseMess.status.code != 200){
 					session[input.user]["currentFlow"] = null;
+					res.send(reply(template));
 				}
-				session[input.user]["currentFlow"] = "create.name";
-				res.send(reponseMess);
+				else{
+					session[input.user]["currentFlow"] = "create.name";
+					template.text = reponseMess.speech;
+					res.send(reply(template));
+				}
 			});
 		}
 		else if(session[input.user]["currentFlow"] === "create.name"){
@@ -160,9 +165,13 @@ app.post("/sendMessage",function(req, res){
 			sendMessageToGG(requestMessage, input.user, false, (reponseMess) => {
 				if(reponseMess.status.code != 200){
 					session[input.user]["currentFlow"] = "create.name";
+					res.send(reply(template));
 				}
-				session[input.user]["currentFlow"] = "create.address";
-				res.send(reponseMess);
+				else{
+					session[input.user]["currentFlow"] = "create.address";
+					template.text = reponseMess.speech;
+					res.send(reply(template));
+				}
 			});
 		}
 		else if(session[input.user]["currentFlow"] === "create.address"){
@@ -170,9 +179,13 @@ app.post("/sendMessage",function(req, res){
 			sendMessageToGG(requestMessage, input.user, false, (reponseMess) => {
 				if(reponseMess.status.code != 200){
 					session[input.user]["currentFlow"] = "create.address";
+					res.send(reply(template));
 				}
-				session[input.user]["currentFlow"] = "create.city";
-				res.send(reponseMess);
+				else{
+					session[input.user]["currentFlow"] = "create.city";
+					template.text = reponseMess.speech;
+					res.send(reply(template));
+				}
 			});
 		}
 		else if(session[input.user]["currentFlow"] === "create.city"){
@@ -180,9 +193,13 @@ app.post("/sendMessage",function(req, res){
 			sendMessageToGG(requestMessage, input.user, false, (reponseMess) => {
 				if(reponseMess.status.code != 200){
 					session[input.user]["currentFlow"] = "create.city";
+					res.send(reply(template));
 				}
-				session[input.user]["currentFlow"] = "create.investor";
-				res.send(reponseMess);
+				else{
+					session[input.user]["currentFlow"] = "create.investor";
+					template.text = reponseMess.speech;
+					res.send(reply(template));
+				}
 			});
 		}
 		else if(session[input.user]["currentFlow"] === "create.investor"){
@@ -190,9 +207,20 @@ app.post("/sendMessage",function(req, res){
 			sendMessageToGG(requestMessage, input.user, false, (reponseMess) => {
 				if(reponseMess.status.code != 200){
 					session[input.user]["currentFlow"] = "create.investor";
+					res.send(reply(template));
 				}
-				session[input.user]["currentFlow"] = "create.unit";
-				res.send(reponseMess);
+				else{
+					session[input.user]["currentFlow"] = "create.unit";
+					template.text = reponseMess.speech;
+					let types = ['Dân dụng', 'Công nghiệp', 'Giao thông', 'Thủy lợi', 'Hạ tầng kỹ thuật'];
+					let typesLength = types.length;
+					let buttons = [];
+					for(let i = 0; i < typesLength; i++){
+						buttons.push(createButton(types[i], "select", types[i]));
+					}
+					template.buttons = buttons;
+					res.send(reply(template));
+				}
 			});
 		}
 		else if(session[input.user]["currentFlow"] === "create.unit"){
