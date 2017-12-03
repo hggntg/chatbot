@@ -277,7 +277,7 @@ app.post("/sendMessage",function(req, res){
 					buttons.push(createButton(levels[i], "select", levels[i]));
 				}
 				template.buttons = buttons;
-				res.send(reponseMess);
+				res.send(reply(template));
 			});
 		}
 		else if(session[input.user]["currentFlow"] === "create.designType"){
