@@ -32,7 +32,7 @@ let sendMessageToGG = function(query, sessionId, isFirst, callback){
 	let request = {
 		"lang": "en",
 		"query": query,
-		"sessionId": sessionId
+		"sessionId": new Buffer(sessionId.substring(0,24)).toString(base64);
 	}
 	if(isFirst){
 		request["resetContexts"] = true;
