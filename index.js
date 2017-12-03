@@ -70,6 +70,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.post("/sendMessage",function(req, res){
 	let input = req.body;
 	if(input.flow === "create"){
+		if(!session[input.user])
+			session[input.user] = {};
 		if(!session[input.user]["create"]){
 			session[input.user]["create"] = Object.assign({}, flow.create);
 			session[input.user]["currentFlow"] = null;
