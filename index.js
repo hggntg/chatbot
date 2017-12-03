@@ -40,9 +40,9 @@ let sendMessageToGG = function(query, sessionId, contexts, callback){
 	let reqPost = https.request({
 		host : apiHost,
 		path : "/v1/query",
-		method : "POST",
+		method : "GET",
 		headers :{
-			"Content-Type" : "application/json, charset=utf-8",
+			"Content-Type" : "application/x-www-form-urlencoded, charset=utf-8",
 			"Content-Length" : postBody.length,
 			Authorization: "Bearer " + CLIENT_TOKEN
 		}
