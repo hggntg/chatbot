@@ -368,10 +368,10 @@ app.post("/sendMessage",function(req, res){
 					let construction = {};
 					for(let i = 0; i < choosingEleLength; i++){
 						if(choosingEle[i] === "constructionCity"){
-							construction[cKey[i]] = getSupplierId(context.parameters[choosingEle[i]]);
+							construction[cKey[i]] = getSupplierId(decodeMessage(context.parameters[choosingEle[i]]));
 						}
 						else
-							construction[cKey[i]] = context.parameters[choosingEle[i]];
+							construction[cKey[i]] = decodeMessage(context.parameters[choosingEle[i]]);
 					}
 					res.send({construction : construction, type : "IS_NOT_MESSAGE"});
 				});
