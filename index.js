@@ -398,7 +398,7 @@ app.post("/sendMessage",function(req, res){
 					};
 					for(let i = 0; i < choosingEleLength; i++){
 						if(choosingEle[i] === "constructionCity"){
-							construction[c[Key]] = getSupplierId(context[choosingEle[i]]);
+							construction[cKey[i]] = getSupplierId(context[choosingEle[i]]);
 						}
 						else
 							construction[cKey[i]] = context[choosingEle[i]];
