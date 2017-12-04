@@ -25,7 +25,7 @@ const port = 3000;
 const CLIENT_TOKEN = "5e8503c7d5544a629f303ca20240b26b";
 const DEV_TOKEN = "";
 const bodyParser = require('body-parser');
-const dutoanHost = "http://localhost:8080/HMS/public/";
+const dutoanHost = "http://dutoanhms.vnclink.com/";
 const apiHost = "api.dialogflow.com";
 let suppliers = [];
 
