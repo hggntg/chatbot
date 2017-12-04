@@ -102,33 +102,6 @@ let sendMessageToGG = function(query, sessionId, isFirst, callback){
 	reqPost.end();
 }
 
-let createConstruction = function(construction, googleToken, callback){
-	let postBody = JSON.stringify(construction);
-	let reqPost = https.request({
-		host : dutoanHost,
-		path : "/construction",
-		method : "POST",
-		headers :{
-			"Content-Type" : "application/json, charset=utf-8",
-			"Content-Length" : postBody.length,
-			"Cookie" : `googleToken=${googleToken}`
-		}
-	},function(res){
-		var chunks = [];
-
-		res.on("data", function (chunk) {
-			chunks.push(chunk);
-		});
-
-		res.on("end", function () {
-			var body = Buffer.concat(chunks);
-			console.log(body.toString());
-		});
-	});
-	reqPost.write(postBody);
-	reqPost.end();
-}
-
 let encodeMessage = function(message){
 	message = new Buffer(message, "utf-8").toString("base64");
 	message = message.replace(/\//g,"hspskb");
@@ -386,7 +359,6 @@ app.post("/sendMessage",function(req, res){
 			if(input.message === "Đồng ý"){
 				delete session[input.user];
 				getContext(input, "createconstruction", function(context){
-					res.send(context);
 					let choosingEle = [
 					"constructionName","constructionAddress","constructionCity","constructionInvestor","constructionUnit",
 					"constructionType","constructionDesignType","constructionLevel"
@@ -401,9 +373,7 @@ app.post("/sendMessage",function(req, res){
 						else
 							construction[cKey[i]] = context.parameters[choosingEle[i]];
 					}
-					createConstruction(construction, input.user, function(result){
-						console.log(JSON.stringify(result));
-					});
+					res.send({construction : construction, type : "IS_NOT_MESSAGE"});
 				});
 			}
 			else if(input.message === "Hủy"){
