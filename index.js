@@ -26,13 +26,14 @@ const CLIENT_TOKEN = "5e8503c7d5544a629f303ca20240b26b";
 const DEV_TOKEN = "";
 const bodyParser = require('body-parser');
 const dutoanHost = "dutoanhms.vnclink.com";
+const adminHost = "admin-hms.vnclink.com"
 const apiHost = "api.dialogflow.com";
 let suppliers = [];
 
 let init = function(){
 	let reqGet = https.request({
-		host : dutoanHost,
-		path : "/suppliers",
+		host : adminHost,
+		path : "/api/supplier?index=0&limit=1000",
 		method : "GET",
 		headers :{
 			"Content-Type" : "application/json, charset=utf-8"
