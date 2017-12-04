@@ -46,7 +46,8 @@ let init = function(){
 
 		res.on("end", function () {
 			var body = Buffer.concat(chunks);
-			suppliers = JSON.parse(body.toString());
+			console.log(body.toString());
+			//suppliers = JSON.parse(body.toString());
 		});
 	});
 	reqGet.end();
