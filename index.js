@@ -401,7 +401,7 @@ app.post("/sendMessage",function(req, res){
 							construction[c[Key]] = getSupplierId(context[choosingEle[i]]);
 						}
 						else
-							construction[c[Key]] = context[choosingEle[i]];
+							construction[cKey[i]] = context[choosingEle[i]];
 					}
 					createConstruction(construction, function(result){
 						console.log(JSON.stringify(result));
