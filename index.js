@@ -33,7 +33,7 @@ const apiHost = "api.dialogflow.com";
 let init = function(){
 	let reqGet = https.request({
 		host : apiHost,
-		path : "/suppliers",
+		path : "/supliers",
 		method : "GET",
 		headers :{
 			"Content-Type" : "application/json, charset=utf-8"
