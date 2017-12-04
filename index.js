@@ -398,9 +398,15 @@ app.post("/sendMessage",function(req, res){
 
 app.get("/reply", function(req, res){
 	let input = req.query;
+	let temp = Object.assign({}, menuTemplate);
 	if(input.type === "menu"){
-		let temp = Object.assign({}, menuTemplate);
 		temp.text = "Chào bạn! Bạn đang muốn làm gì?";
+		let reponseMess = reply(temp);
+		delete session[input.user];
+		res.send(reponseMess);
+	}
+	else if(input.type === "menuContinute"){
+		temp.text = "Bạn đang muốn làm gì?";
 		let reponseMess = reply(temp);
 		delete session[input.user];
 		res.send(reponseMess);
