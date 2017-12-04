@@ -26,14 +26,13 @@ const CLIENT_TOKEN = "5e8503c7d5544a629f303ca20240b26b";
 const DEV_TOKEN = "";
 const bodyParser = require('body-parser');
 const dutoanHost = "http://localhost:8080/HMS/public/";
-let suppliers = [];
-
 const apiHost = "api.dialogflow.com";
+let suppliers = [];
 
 let init = function(){
 	let reqGet = https.request({
-		host : apiHost,
-		path : "/supliers",
+		host : dutoanHost,
+		path : "/suppliers",
 		method : "GET",
 		headers :{
 			"Content-Type" : "application/json, charset=utf-8"
