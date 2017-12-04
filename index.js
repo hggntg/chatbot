@@ -53,7 +53,7 @@ let init = function(){
 	reqGet.end();
 }
 
-int();
+init();
 
 let getSupplierId = function(name){
 	let supplierLength = suppliers.length;
