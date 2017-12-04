@@ -144,12 +144,12 @@ let yesOrNoTemplate = {
 	{
 		"title" : "Đồng ý",
 		"action" : "select",
-		"value" : "yes"
+		"value" : "Đồng ý"
 	},
 	{
 		"title" : "Hủy",
 		"action" : "select",
-		"value" : "no"
+		"value" : "Hủy"
 	}
 	]
 }
@@ -317,13 +317,13 @@ app.post("/sendMessage",function(req, res){
 			});
 		}
 		if(session[input.user]["currentFlow"] === "create.level"){
-			if(input.message === "OK"){
+			if(input.message === "Đồng ý"){
 				delete session[input.user];
 				getContext(input, "createconstruction", function(context){
 					res.send(context);
 				});
 			}
-			else if(input.message === "NO"){
+			else if(input.message === "Hủy"){
 				delete session[input.user];
 				let temp = Object.assign({}, menuTemplate);
 				temp.text = "Bạn đang muốn làm gì?";
@@ -331,7 +331,7 @@ app.post("/sendMessage",function(req, res){
 				res.send(reponseMess);
 			}
 			else{
-				res.send([{text : "Bạn chỉ có thể chọn 'Đồng ý' hoặc 'Không'"}]);
+				res.send([{text : "Bạn chỉ có thể chọn 'Đồng ý' hoặc 'Hủy'"}]);
 			}
 		}
 	}
