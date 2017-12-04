@@ -56,9 +56,11 @@ let init = function(){
 init();
 
 let getSupplierId = function(name){
+	name = name.toLowerCase();
+	name = name.replace("tỉnh", "").repalce("thành phố", "")
 	let supplierLength = suppliers.length;
 	for(let i = 0; i < supplierLength; i++){
-		if(suppliers[i].name === name){
+		if(suppliers[i].name.toLowerCase().indexOf(name) >= 0){
 			return suppliers[i].id;
 		}
 	}
