@@ -102,7 +102,7 @@ let sendMessageToGG = function(query, sessionId, isFirst, callback){
 	reqPost.end();
 }
 
-let createConstruction = function(construction, callback){
+let createConstruction = function(construction, googleToken, callback){
 	let postBody = JSON.stringify(construction);
 	let reqPost = https.request({
 		host : dutoanHost,
@@ -110,7 +110,8 @@ let createConstruction = function(construction, callback){
 		method : "POST",
 		headers :{
 			"Content-Type" : "application/json, charset=utf-8",
-			"Content-Length" : postBody.length
+			"Content-Length" : postBody.length,
+			"Cookie" : `googleToken=${googleToken}`
 		}
 	},function(res){
 		var chunks = [];
@@ -400,7 +401,7 @@ app.post("/sendMessage",function(req, res){
 						else
 							construction[cKey[i]] = context.parameters[choosingEle[i]];
 					}
-					createConstruction(construction, function(result){
+					createConstruction(construction, input.user, function(result){
 						console.log(JSON.stringify(result));
 					});
 				});
