@@ -385,7 +385,6 @@ app.post("/sendMessage",function(req, res){
 			if(input.message === "Đồng ý"){
 				delete session[input.user];
 				getContext(input, "createconstruction", function(context){
-					console.log(JSON.stringify(context));
 					res.send(context);
 					let choosingEle = [
 					"constructionName","constructionAddress","constructionCity","constructionInvestor","constructionUnit",
@@ -396,10 +395,10 @@ app.post("/sendMessage",function(req, res){
 					let construction = {};
 					for(let i = 0; i < choosingEleLength; i++){
 						if(choosingEle[i] === "constructionCity"){
-							construction[cKey[i]] = getSupplierId(context[choosingEle[i]]);
+							construction[cKey[i]] = getSupplierId(context.parameters[choosingEle[i]]);
 						}
 						else
-							construction[cKey[i]] = context[choosingEle[i]];
+							construction[cKey[i]] = context.parameters[choosingEle[i]];
 					}
 					createConstruction(construction, function(result){
 						console.log(JSON.stringify(result));
