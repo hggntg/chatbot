@@ -1,4 +1,5 @@
 const https = require('https');
+const http = require('http');
 const express = require('express');
 
 let app = express();
@@ -24,9 +25,45 @@ const port = 3000;
 const CLIENT_TOKEN = "5e8503c7d5544a629f303ca20240b26b";
 const DEV_TOKEN = "";
 const bodyParser = require('body-parser');
-
+const dutoanHost = "http://localhost:8080/HMS/public/";
+let suppliers = [];
 
 const apiHost = "api.dialogflow.com";
+
+let init = function(){
+	let reqGet = https.request({
+		host : apiHost,
+		path : "/suppliers",
+		method : "GET",
+		headers :{
+			"Content-Type" : "application/json, charset=utf-8"
+		}
+	},function(res){
+		var chunks = [];
+
+		res.on("data", function (chunk) {
+			chunks.push(chunk);
+		});
+
+		res.on("end", function () {
+			var body = Buffer.concat(chunks);
+			suppliers = JSON.parse(body.toString());
+		});
+	});
+	reqGet.end();
+}
+
+int();
+
+let getSupplierId = function(name){
+	let supplierLength = suppliers.length;
+	for(let i = 0; i < supplierLength; i++){
+		if(suppliers[i].name === name){
+			return suppliers[i].id;
+		}
+	}
+	return -1;
+}
 
 let sendMessageToGG = function(query, sessionId, isFirst, callback){
 	let request = {
@@ -46,6 +83,32 @@ let sendMessageToGG = function(query, sessionId, isFirst, callback){
 			"Content-Type" : "application/json, charset=utf-8",
 			"Content-Length" : postBody.length,
 			Authorization: "Bearer " + CLIENT_TOKEN
+		}
+	},function(res){
+		var chunks = [];
+
+		res.on("data", function (chunk) {
+			chunks.push(chunk);
+		});
+
+		res.on("end", function () {
+			var body = Buffer.concat(chunks);
+			callback(JSON.parse(body.toString()));
+		});
+	});
+	reqPost.write(postBody);
+	reqPost.end();
+}
+
+let createConstruction = function(construction, callback){
+	let postBody = JSON.stringify(construction);
+	let reqPost = https.request({
+		host : dutoanHost,
+		path : "/construction",
+		method : "POST",
+		headers :{
+			"Content-Type" : "application/json, charset=utf-8",
+			"Content-Length" : postBody.length
 		}
 	},function(res){
 		var chunks = [];
@@ -321,6 +384,26 @@ app.post("/sendMessage",function(req, res){
 				delete session[input.user];
 				getContext(input, "createconstruction", function(context){
 					res.send(context);
+					let choosingEle = [
+					"constructionName","constructionAddress","constructionCity","constructionInvestor","constructionUnit",
+					"constructionType","constructionDesignType","constructionLevel"
+					];
+					let cKey = ["name", "address", "supplier_id", "investor", "contractor", "type", "design_type", "level"]; 
+					let choosingEleLength = choosingEle.length;
+					let construction = {
+						"name" : "",
+
+					};
+					for(let i = 0; i < choosingEleLength; i++){
+						if(choosingEle[i] === "constructionCity"){
+							construction[c[Key]] = getSupplierId(context[choosingEle[i]]);
+						}
+						else
+							construction[c[Key]] = context[choosingEle[i]];
+					}
+					createConstruction(construction, function(result){
+						console.log(JSON.stringify(result));
+					});
 				});
 			}
 			else if(input.message === "Hủy"){
