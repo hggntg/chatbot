@@ -121,7 +121,7 @@ let createConstruction = function(construction, callback){
 
 		res.on("end", function () {
 			var body = Buffer.concat(chunks);
-			callback(JSON.parse(body.toString()));
+			console.log(body.toString());
 		});
 	});
 	reqPost.write(postBody);
