@@ -441,13 +441,35 @@ app.post("/sendMessage",function(req, res){
 			requestMessage = "cloneId " + encodeMessage(input.message.toString());
 			sendMessageToGG(requestMessage, input.user, true, (reponseMess) => {
 				if(reponseMess.status.code != 200){
-					session[input.user]["currentFlow"] = null;
+					session[input.user]["currentFlow"] = "clone.choose";
 					res.send(reply(template));
 				}
 				else{
 					session[input.user]["currentFlow"] = "clone.name";
 					template.text = reponseMess.result.speech;
 					res.send(reply(template));
+				}
+			});
+		}
+		else if(session[input.user]["currentFlow"] === "clone.name") {
+			requestMessage = "cloneName " + encodeMessage(input.message.toString());
+			sendMessageToGG(requestMessage, input.user, true, (reponseMess) => {
+				if(reponseMess.status.code != 200){
+					session[input.user]["currentFlow"] = "clone.name";
+					res.send(reply(template));
+				}
+				else{
+					delete(session[input.user]);
+					getContext(input, "cloneconstruction", function(context){
+						let choosingEle = ["cloneId","cloneName"];
+						let cKey = ["id", "name"]; 
+						let choosingEleLength = choosingEle.length;
+						let cloneConstruction = {};
+						for(let i = 0; i < choosingEleLength; i++){
+							cloneConstruction[cKey[i]] = decodeMessage(context.parameters[choosingEle[i]]);
+						}
+						res.send({cloneConstruction : cloneConstruction, type : "IS_NOT_MESSAGE"});
+					});
 				}
 			});
 		}
