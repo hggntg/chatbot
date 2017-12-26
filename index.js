@@ -437,7 +437,7 @@ app.post("/sendMessage",function(req, res){
 				res.send(reply(template));
 			});
 		}
-		else if(ession[input.user]["currentFlow"] === "clone.choose") {
+		else if(session[input.user]["currentFlow"] === "clone.choose") {
 			requestMessage = "cloneId " + encodeMessage(input.message);
 			sendMessageToGG(requestMessage, input.user, true, (reponseMess) => {
 				if(reponseMess.status.code != 200){
