@@ -94,7 +94,7 @@ let getPattern = function(cb){
 let doCloneConstruction = function(user, sourceId, name, cb){
 	let request = {
 		"token": user,
-		"sourceId": sourceId,
+		"sourceId": Number(sourceId),
 		"name" : name
 	}
 	console.log(request);
