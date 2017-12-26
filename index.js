@@ -97,6 +97,7 @@ let doCloneConstruction = function(user, sourceId, name, cb){
 		"sourceId": sourceId,
 		"name" : name
 	}
+	console.log(request);
 	let postBody = JSON.stringify(request);
 	let reqPost = https.request({
 		host : adminHost,
@@ -497,7 +498,7 @@ app.post("/sendMessage",function(req, res){
 						doCloneConstruction(input.user, cloneConstruction["id"], cloneConstruction["name"], function(construction){
 							delete(session[input.user]);
 							res.send({construction : construction, type : "IS_NOT_MESSAGE"});
-						})	
+						});	
 					});
 				}
 			});
