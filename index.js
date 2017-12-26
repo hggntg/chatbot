@@ -67,6 +67,34 @@ let getSupplierId = function(name){
 	return -1;
 }
 
+let getPattern = function(cb){
+	let reqGet = https.request({
+		host : adminHost,
+		path : "/api/construction/patterns",
+		method : "GET",
+		headers :{
+			"Content-Type" : "application/json, charset=utf-8"
+		}
+	},function(res){
+		var chunks = [];
+
+		res.on("data", function (chunk) {
+			chunks.push(chunk);
+		});
+
+		res.on("end", function () {
+			var body = Buffer.concat(chunks);
+			let patterns = JSON.parse(body.toString());
+			cb(patterns);
+		});
+	});
+	reqGet.end();
+}
+
+let cloneConstruction = function(user, sourceId, name){
+
+}
+
 let sendMessageToGG = function(query, sessionId, isFirst, callback){
 	let request = {
 		"lang": "en",
@@ -389,36 +417,24 @@ app.post("/sendMessage",function(req, res){
 		}
 	}
 	else if(input.flow === "clone"){
+		let template = createTemplate("");
 		if(!session[input.user]){
 			session[input.user] = {};
 			session[input.user]["currentFlow"] = null;
 		}
 		let requestMessage = "";
 		if(session[input.user]["currentFlow"] === null){
-			requestMessage = "cloneName " + encodeMessage(input.message);
-			sendMessageToGG(requestMessage, input.user, true, (reponseMess) => {
-				if(reponseMess.status.code != 200){
-					session[input.user]["currentFlow"] = null;
-					res.send(reply(template));
+			requestMessage = "cloneId " + encodeMessage(input.message);
+			getPattern((patterns) => {
+				session[input.user]["currentFlow"] = "clone.choose";
+				template.text = "Chọn công trình :";
+				let patternsLength = patterns.length;
+				let buttons = [];
+				for(let i = 0; i < patternsLength; i++){
+					buttons.push(createButton(patterns[i]["name"], "select", patterns[i]["id"]));
 				}
-				else{
-					session[input.user]["currentFlow"] = "clone.name";
-					template.text = reponseMess.result.speech;
-					res.send(reply(template));
-				}
-			});
-		}
-		else if(session[input.user]["currentFlow"] === "clone.name"){
-			delete session[input.user];
-			getContext(input, "cloneConstruction", function(context){
-				let choosingEle = ["constructionName"];
-				let cKey = ["name"]; 
-				let choosingEleLength = choosingEle.length;
-				let construction = {};
-				for(let i = 0; i < choosingEleLength; i++){
-					construction[cKey[i]] = decodeMessage(context.parameters[choosingEle[i]]);
-				}
-				console.log(construction);
+				template.buttons = buttons;
+				res.send(reply(template));
 			});
 		}
 	}
