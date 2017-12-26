@@ -459,7 +459,6 @@ app.post("/sendMessage",function(req, res){
 					res.send(reply(template));
 				}
 				else{
-					delete(session[input.user]);
 					getContext(input, "cloneconstruction", function(context){
 						let choosingEle = ["cloneId","cloneName"];
 						let cKey = ["id", "name"]; 
@@ -468,6 +467,7 @@ app.post("/sendMessage",function(req, res){
 						for(let i = 0; i < choosingEleLength; i++){
 							cloneConstruction[cKey[i]] = decodeMessage(context.parameters[choosingEle[i]]);
 						}
+						delete(session[input.user]);
 						res.send({cloneConstruction : cloneConstruction, type : "IS_NOT_MESSAGE"});
 					});
 				}
