@@ -424,8 +424,8 @@ app.post("/sendMessage",function(req, res){
 		}
 		let requestMessage = "";
 		if(session[input.user]["currentFlow"] === null){
-			requestMessage = "cloneId " + encodeMessage(input.message);
 			getPattern((patterns) => {
+				console.log(patterns);
 				session[input.user]["currentFlow"] = "clone.choose";
 				template.text = "Chọn công trình :";
 				let patternsLength = patterns.length;
