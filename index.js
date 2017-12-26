@@ -453,7 +453,7 @@ app.post("/sendMessage",function(req, res){
 		}
 		else if(session[input.user]["currentFlow"] === "clone.name") {
 			requestMessage = "cloneName " + encodeMessage(input.message.toString());
-			sendMessageToGG(requestMessage, input.user, true, (reponseMess) => {
+			sendMessageToGG(requestMessage, input.user, false, (reponseMess) => {
 				if(reponseMess.status.code != 200){
 					session[input.user]["currentFlow"] = "clone.name";
 					res.send(reply(template));
