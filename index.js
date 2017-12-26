@@ -91,8 +91,35 @@ let getPattern = function(cb){
 	reqGet.end();
 }
 
-let cloneConstruction = function(user, sourceId, name){
+let doCloneConstruction = function(user, sourceId, name, cb){
+	let request = {
+		"token": user,
+		"sourceId": sourceId,
+		"name" : name
+	}
+	let postBody = JSON.stringify(request);
+	let reqPost = https.request({
+		host : adminHost,
+		path : "/api/construction/clone",
+		method : "POST",
+		headers :{
+			"Content-Type" : "application/json, charset=utf-8",
+			"Content-Length" : postBody.length
+		}
+	},function(res){
+		var chunks = [];
 
+		res.on("data", function (chunk) {
+			chunks.push(chunk);
+		});
+
+		res.on("end", function () {
+			var body = Buffer.concat(chunks);
+			cb(JSON.parse(body.toString()));
+		});
+	});
+	reqPost.write(postBody);
+	reqPost.end();
 }
 
 let sendMessageToGG = function(query, sessionId, isFirst, callback){
@@ -460,7 +487,6 @@ app.post("/sendMessage",function(req, res){
 				}
 				else{
 					getContext(input, "cloneconstruction", function(context){
-						console.log(context);
 						let choosingEle = ["cloneId","cloneName"];
 						let cKey = ["id", "name"]; 
 						let choosingEleLength = choosingEle.length;
@@ -468,8 +494,10 @@ app.post("/sendMessage",function(req, res){
 						for(let i = 0; i < choosingEleLength; i++){
 							cloneConstruction[cKey[i]] = decodeMessage(context.parameters[choosingEle[i]]);
 						}
-						delete(session[input.user]);
-						res.send({cloneConstruction : cloneConstruction, type : "IS_NOT_MESSAGE"});
+						doCloneConstruction(input.user, cloneConstruction["id"], cloneConstruction["name"], function(construction){
+							delete(session[input.user]);
+							res.send({construction : construction, type : "IS_NOT_MESSAGE"});
+						})	
 					});
 				}
 			});
