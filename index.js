@@ -93,19 +93,18 @@ let getPattern = function(cb){
 
 let doCloneConstruction = function(user, sourceId, name, cb){
 	let request = {
-		request : {
-			"token": user,
-			"sourceId": Number(sourceId),
-			"name" : name
-		}
+		"token": user,
+		"sourceId": Number(sourceId),
+		"name" : name
 	}
-	let postBody = JSON.stringify(request);
+	let querystring = require("querystring");
+	let postBody = querystring.stringify(request);
 	let reqPost = https.request({
 		host : adminHost,
 		path : "/api/construction/clone",
 		method : "POST",
 		headers :{
-			"Content-Type" : "application/json, charset=utf-8",
+			'Content-Type': 'application/x-www-form-urlencoded',
 			"Content-Length" : postBody.length
 		}
 	},function(res){
@@ -117,7 +116,6 @@ let doCloneConstruction = function(user, sourceId, name, cb){
 
 		res.on("end", function () {
 			var body = Buffer.concat(chunks);
-			console.log(body.toString());
 			cb(JSON.parse(body.toString()));
 		});
 	});
