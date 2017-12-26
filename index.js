@@ -93,9 +93,11 @@ let getPattern = function(cb){
 
 let doCloneConstruction = function(user, sourceId, name, cb){
 	let request = {
-		"token": user,
-		"sourceId": Number(sourceId),
-		"name" : name
+		request : {
+			"token": user,
+			"sourceId": Number(sourceId),
+			"name" : name
+		}
 	}
 	let postBody = JSON.stringify(request);
 	let reqPost = https.request({
