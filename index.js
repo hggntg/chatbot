@@ -460,6 +460,7 @@ app.post("/sendMessage",function(req, res){
 				}
 				else{
 					getContext(input, "cloneconstruction", function(context){
+						console.log(context);
 						let choosingEle = ["cloneId","cloneName"];
 						let cKey = ["id", "name"]; 
 						let choosingEleLength = choosingEle.length;
