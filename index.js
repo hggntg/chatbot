@@ -425,7 +425,6 @@ app.post("/sendMessage",function(req, res){
 		let requestMessage = "";
 		if(session[input.user]["currentFlow"] === null){
 			getPattern((patterns) => {
-				console.log(patterns);
 				session[input.user]["currentFlow"] = "clone.choose";
 				template.text = "Chọn công trình :";
 				let patternsLength = patterns.length;
@@ -440,6 +439,7 @@ app.post("/sendMessage",function(req, res){
 		else if(session[input.user]["currentFlow"] === "clone.choose") {
 			requestMessage = "cloneId " + encodeMessage(input.message.toString());
 			sendMessageToGG(requestMessage, input.user, true, (reponseMess) => {
+				console.log(reponseMess.status.code);
 				if(reponseMess.status.code != 200){
 					session[input.user]["currentFlow"] = "clone.choose";
 					res.send(reply(template));
