@@ -26,7 +26,7 @@ const CLIENT_TOKEN = "5e8503c7d5544a629f303ca20240b26b";
 const DEV_TOKEN = "";
 const bodyParser = require('body-parser');
 const dutoanHost = "dutoanhms.vnclink.com";
-const adminHost = "admin-hms.vnclink.com"
+const adminHost = "admin-hms.vnclink.com";
 const apiHost = "api.dialogflow.com";
 let suppliers = [];
 
@@ -170,9 +170,9 @@ let menuTemplate = {
 		"value" : "create"
 	},
 	{
-		"title" : "Bạn muốn chỉnh sửa thông tin công trình?",
-		"action" : "update",
-		"value" : "create"
+		"title" : "Bạn muốn tạo công trình từ công trình mẫu?",
+		"action" : "clone",
+		"value" : "clone"
 	}
 	]
 }
@@ -388,8 +388,39 @@ app.post("/sendMessage",function(req, res){
 			}
 		}
 	}
-	else if(input.flow === "update"){
-
+	else if(input.flow === "clone"){
+		if(!session[input.user]){
+			session[input.user] = {};
+			session[input.user]["currentFlow"] = null;
+		}
+		let requestMessage = "";
+		if(session[input.user]["currentFlow"] === null){
+			requestMessage = "cloneName " + encodeMessage(input.message);
+			sendMessageToGG(requestMessage, input.user, true, (reponseMess) => {
+				if(reponseMess.status.code != 200){
+					session[input.user]["currentFlow"] = null;
+					res.send(reply(template));
+				}
+				else{
+					session[input.user]["currentFlow"] = "clone.name";
+					template.text = reponseMess.result.speech;
+					res.send(reply(template));
+				}
+			});
+		}
+		else if(session[input.user]["currentFlow"] === "clone.name"){
+			delete session[input.user];
+			getContext(input, "cloneConstruction", function(context){
+				let choosingEle = ["constructionName"];
+				let cKey = ["name"]; 
+				let choosingEleLength = choosingEle.length;
+				let construction = {};
+				for(let i = 0; i < choosingEleLength; i++){
+					construction[cKey[i]] = decodeMessage(context.parameters[choosingEle[i]]);
+				}
+				console.log(construction);
+			});
+		}
 	}
 	else{
 		res.send("OK");
