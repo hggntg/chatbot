@@ -437,6 +437,20 @@ app.post("/sendMessage",function(req, res){
 				res.send(reply(template));
 			});
 		}
+		else if(ession[input.user]["currentFlow"] === "clone.choose") {
+			requestMessage = "cloneId " + encodeMessage(input.message);
+			sendMessageToGG(requestMessage, input.user, true, (reponseMess) => {
+				if(reponseMess.status.code != 200){
+					session[input.user]["currentFlow"] = null;
+					res.send(reply(template));
+				}
+				else{
+					session[input.user]["currentFlow"] = "clone.name";
+					template.text = reponseMess.result.speech;
+					res.send(reply(template));
+				}
+			});
+		}
 	}
 	else{
 		res.send("OK");
