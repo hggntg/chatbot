@@ -105,9 +105,8 @@ let doCloneConstruction = function(user, sourceId, name, cb){
 		path : "/api/construction/clone",
 		method : "POST",
 		headers :{
-			"Content-Length" : postBody.length,
-			"Accept" : "application/json",
-			"User-Agent" : "request"
+			"Content-Type" : "application/json",
+			"Content-Length" : postBody.length
 		}
 	},function(res){
 		var chunks = [];
