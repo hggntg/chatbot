@@ -1,6 +1,7 @@
 const https = require('https');
 const http = require('http');
 const express = require('express');
+const useragent = require('express-useragent');
 
 let app = express();
 let session = [];
@@ -106,7 +107,7 @@ let doCloneConstruction = function(user, sourceId, name, cb){
 		headers :{
 			"Content-Type" : "application/json, charset=utf-8",
 			"Content-Length" : postBody.length,
-			"User-Agent" : "request"
+			"User-Agent" : useragent.express()
 		}
 	},function(res){
 		var chunks = [];
@@ -117,6 +118,7 @@ let doCloneConstruction = function(user, sourceId, name, cb){
 
 		res.on("end", function () {
 			var body = Buffer.concat(chunks);
+			console.log(body.toString());
 			cb(JSON.parse(body.toString()));
 		});
 	});
