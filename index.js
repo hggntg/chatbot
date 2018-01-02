@@ -103,6 +103,7 @@ let doCloneConstruction = function(user, sourceId, name, cb){
 		host : adminHost,
 		path : "/api/construction/clone",
 		method : "POST",
+		json : true,
 		headers :{
 			"Content-Type" : "application/json, charset=utf-8",
 			"Content-Length" : postBody.length,
