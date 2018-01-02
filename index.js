@@ -117,7 +117,6 @@ let doCloneConstruction = function(user, sourceId, name, cb){
 
 		res.on("end", function () {
 			var body = Buffer.concat(chunks);
-			console.log(body.toString());
 			cb(JSON.parse(body.toString()));
 		});
 	});
