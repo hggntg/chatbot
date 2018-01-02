@@ -107,7 +107,8 @@ let doCloneConstruction = function(user, sourceId, name, cb){
 		headers :{
 			"Content-Type" : "application/json",
 			"Content-Length" : postBody.length,
-			"Accept" : "application/json"
+			"Accept" : "application/json",
+			"mode" : "no-cors"
 		}
 	},function(res){
 		var chunks = [];
