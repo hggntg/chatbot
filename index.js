@@ -1,7 +1,6 @@
 const https = require('https');
 const http = require('http');
 const express = require('express');
-const useragent = require('express-useragent');
 
 let app = express();
 let session = [];
@@ -118,11 +117,9 @@ let doCloneConstruction = function(user, sourceId, name, cb){
 
 		res.on("end", function () {
 			var body = Buffer.concat(chunks);
-			console.log(body.toString());
 			cb(JSON.parse(body.toString()));
 		});
 	});
-	console.log(reqPost);
 	reqPost.write(postBody);
 	reqPost.end();
 }
@@ -144,7 +141,7 @@ let sendMessageToGG = function(query, sessionId, isFirst, callback){
 		headers :{
 			"Content-Type" : "application/json, charset=utf-8",
 			"Content-Length" : postBody.length,
-			"Authorization": "Bearer " + CLIENT_TOKEN
+			Authorization: "Bearer " + CLIENT_TOKEN
 		}
 	},function(res){
 		var chunks = [];
@@ -255,7 +252,6 @@ let yesOrNoTemplate = {
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(useragent.express());
 
 app.all("/*",function(req, res, next){
 	res.header('Access-Control-Allow-Origin', '*');
