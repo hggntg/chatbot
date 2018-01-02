@@ -105,8 +105,7 @@ let doCloneConstruction = function(user, sourceId, name, cb){
 		method : "POST",
 		headers :{
 			"Content-Type" : "application/json, charset=utf-8",
-			"Content-Length" : postBody.length,
-			"User-Agent" : undefined
+			"Content-Length" : postBody.length
 		}
 	},function(res){
 		var chunks = [];
@@ -121,6 +120,7 @@ let doCloneConstruction = function(user, sourceId, name, cb){
 			cb(JSON.parse(body.toString()));
 		});
 	});
+	console.log(reqPost);
 	reqPost.write(postBody);
 	reqPost.end();
 }
