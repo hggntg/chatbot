@@ -100,15 +100,13 @@ let doCloneConstruction = function(user, sourceId, name, cb){
 		name : name
 	}
 	let postBody = JSON.stringify(request);
-	console.log(postBody);
 	let reqPost = http.request({
 		host : adminHost,
 		path : "/api/construction/clone",
 		method : "POST",
 		headers :{
 			"Content-Type" : "application/json, charset=utf-8",
-			"Cache-Control": "no-cache",
-			"Content-Length" : postBody.length
+			"Cache-Control": "no-cache"
 		}
 	},function(res){
 		var chunks = [];
