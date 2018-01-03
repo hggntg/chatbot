@@ -121,7 +121,7 @@ let doCloneConstruction = function(user, sourceId, name, cb){
 			cb(JSON.parse(body.toString()));
 		});
 	});
-	reqPost.write(postBody);
+	reqPost.write(postBody, 'utf-8');
 	reqPost.end();
 }
 
