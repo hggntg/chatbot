@@ -106,6 +106,7 @@ let doCloneConstruction = function(user, sourceId, name, cb){
 		method : "POST",
 		headers :{
 			"Content-Type" : "application/json, charset=utf-8",
+			"Cache-Control": "no-cache",
 			"Content-Length" : postBody.length
 		}
 	},function(res){
