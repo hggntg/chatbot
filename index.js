@@ -100,6 +100,7 @@ let doCloneConstruction = function(user, sourceId, name, cb){
 		name : name
 	}
 	let postBody = JSON.stringify(request);
+	console.log(postBody);
 	let reqPost = http.request({
 		host : adminHost,
 		path : "/api/construction/clone",
