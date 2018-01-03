@@ -97,7 +97,7 @@ let doCloneConstruction = function(user, sourceId, name, cb){
 	let request = {
 		token: user,
 		sourceId: Number(sourceId),
-		name : name
+		name : encodeMessage(name)
 	}
 	let postBody = JSON.stringify(request);
 	let reqPost = http.request({
@@ -107,7 +107,7 @@ let doCloneConstruction = function(user, sourceId, name, cb){
 		headers :{
 			"Content-Type" : "application/json, charset=utf-8",
 			"Cache-Control": "no-cache",
-			"Content-Length" : postBody.length + 1
+			"Content-Length" : postBody.length
 		}
 	},function(res){
 		var chunks = [];
