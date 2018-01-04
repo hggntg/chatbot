@@ -100,6 +100,7 @@ let doCloneConstruction = function(user, sourceId, name, cb){
 		name : encodeMessage(name)
 	}
 	let postBody = JSON.stringify(request);
+	console.log(postBody):
 	let reqPost = http.request({
 		host : adminHost,
 		path : "/api/construction/clone",
@@ -118,7 +119,6 @@ let doCloneConstruction = function(user, sourceId, name, cb){
 
 		res.on("end", function () {
 			var body = Buffer.concat(chunks);
-			console.log(body.toString());
 			cb(JSON.parse(body.toString()));
 		});
 	});
