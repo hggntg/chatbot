@@ -267,7 +267,7 @@ app.all("/*",function(req, res, next){
 app.post("/sendMessage",function(req, res){
 	let input = req.body;
 	let template = createTemplate("");
-	if(input.flow === "create"){
+	if(input.flow === "create" || input.flow === "clone"){
 		if(!session[input.user]){
 			session[input.user] = {};
 			session[input.user]["currentFlow"] = null;
@@ -448,66 +448,66 @@ app.post("/sendMessage",function(req, res){
 			}
 		}
 	}
-	else if(input.flow === "clone"){
-		let template = createTemplate("");
-		if(!session[input.user]){
-			session[input.user] = {};
-			session[input.user]["currentFlow"] = null;
-		}
-		let requestMessage = "";
-		if(session[input.user]["currentFlow"] === null){
-			getPattern((patterns) => {
-				session[input.user]["currentFlow"] = "clone.choose";
-				template.text = "Chọn công trình :";
-				let patternsLength = patterns.length;
-				let buttons = [];
-				for(let i = 0; i < patternsLength; i++){
-					buttons.push(createButton(patterns[i]["name"], "select", patterns[i]["id"]));
-				}
-				template.buttons = buttons;
-				res.send(reply(template));
-			});
-		}
-		else if(session[input.user]["currentFlow"] === "clone.choose") {
-			requestMessage = "cloneId " + encodeMessage(input.message.toString());
-			sendMessageToGG(requestMessage, input.user, true, (reponseMess) => {
-				console.log(reponseMess.status.code);
-				if(reponseMess.status.code != 200){
-					session[input.user]["currentFlow"] = "clone.choose";
-					res.send(reply(template));
-				}
-				else{
-					session[input.user]["currentFlow"] = "clone.name";
-					template.text = reponseMess.result.speech;
-					res.send(reply(template));
-				}
-			});
-		}
-		else if(session[input.user]["currentFlow"] === "clone.name") {
-			requestMessage = "cloneName " + encodeMessage(input.message.toString());
-			sendMessageToGG(requestMessage, input.user, false, (reponseMess) => {
-				if(reponseMess.status.code != 200){
-					session[input.user]["currentFlow"] = "clone.name";
-					res.send(reply(template));
-				}
-				else{
-					getContext(input, "cloneconstruction", function(context){
-						let choosingEle = ["cloneId","cloneName"];
-						let cKey = ["id", "name"]; 
-						let choosingEleLength = choosingEle.length;
-						let cloneConstruction = {};
-						for(let i = 0; i < choosingEleLength; i++){
-							cloneConstruction[cKey[i]] = decodeMessage(context.parameters[choosingEle[i]]);
-						}
-						doCloneConstruction(input.user, cloneConstruction["id"], cloneConstruction["name"], function(construction){
-							delete(session[input.user]);
-							res.send({construction : construction, type : "IS_NOT_MESSAGE"});
-						});	
-					});
-				}
-			});
-		}
-	}
+	// else if(input.flow === "clone"){
+	// 	let template = createTemplate("");
+	// 	if(!session[input.user]){
+	// 		session[input.user] = {};
+	// 		session[input.user]["currentFlow"] = null;
+	// 	}
+	// 	let requestMessage = "";
+	// 	if(session[input.user]["currentFlow"] === null){
+	// 		getPattern((patterns) => {
+	// 			session[input.user]["currentFlow"] = "clone.choose";
+	// 			template.text = "Chọn công trình :";
+	// 			let patternsLength = patterns.length;
+	// 			let buttons = [];
+	// 			for(let i = 0; i < patternsLength; i++){
+	// 				buttons.push(createButton(patterns[i]["name"], "select", patterns[i]["id"]));
+	// 			}
+	// 			template.buttons = buttons;
+	// 			res.send(reply(template));
+	// 		});
+	// 	}
+	// 	else if(session[input.user]["currentFlow"] === "clone.choose") {
+	// 		requestMessage = "cloneId " + encodeMessage(input.message.toString());
+	// 		sendMessageToGG(requestMessage, input.user, true, (reponseMess) => {
+	// 			console.log(reponseMess.status.code);
+	// 			if(reponseMess.status.code != 200){
+	// 				session[input.user]["currentFlow"] = "clone.choose";
+	// 				res.send(reply(template));
+	// 			}
+	// 			else{
+	// 				session[input.user]["currentFlow"] = "clone.name";
+	// 				template.text = reponseMess.result.speech;
+	// 				res.send(reply(template));
+	// 			}
+	// 		});
+	// 	}
+	// 	else if(session[input.user]["currentFlow"] === "clone.name") {
+	// 		requestMessage = "cloneName " + encodeMessage(input.message.toString());
+	// 		sendMessageToGG(requestMessage, input.user, false, (reponseMess) => {
+	// 			if(reponseMess.status.code != 200){
+	// 				session[input.user]["currentFlow"] = "clone.name";
+	// 				res.send(reply(template));
+	// 			}
+	// 			else{
+	// 				getContext(input, "cloneconstruction", function(context){
+	// 					let choosingEle = ["cloneId","cloneName"];
+	// 					let cKey = ["id", "name"]; 
+	// 					let choosingEleLength = choosingEle.length;
+	// 					let cloneConstruction = {};
+	// 					for(let i = 0; i < choosingEleLength; i++){
+	// 						cloneConstruction[cKey[i]] = decodeMessage(context.parameters[choosingEle[i]]);
+	// 					}
+	// 					doCloneConstruction(input.user, cloneConstruction["id"], cloneConstruction["name"], function(construction){
+	// 						delete(session[input.user]);
+	// 						res.send({construction : construction, type : "IS_NOT_MESSAGE"});
+	// 					});	
+	// 				});
+	// 			}
+	// 		});
+	// 	}
+	// }
 	else{
 		res.send("OK");
 	}
