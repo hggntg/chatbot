@@ -154,6 +154,7 @@ let sendMessageToGG = function(query, sessionId, isFirst, callback){
 
 		res.on("end", function () {
 			var body = Buffer.concat(chunks);
+			console.log(body.toString());
 			callback(JSON.parse(body.toString()));
 		});
 	});
